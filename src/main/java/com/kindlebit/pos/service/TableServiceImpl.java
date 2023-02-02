@@ -1,8 +1,10 @@
 package com.kindlebit.pos.service;
 
 
+import com.kindlebit.pos.models.BookTableDetails;
 import com.kindlebit.pos.models.Customer;
 import com.kindlebit.pos.models.TableTop;
+import com.kindlebit.pos.repository.BookTableDetailsRepository;
 import com.kindlebit.pos.repository.CustomerRepository;
 import com.kindlebit.pos.repository.TableRepository;
 import com.kindlebit.pos.utill.Response;
@@ -21,6 +23,9 @@ public class TableServiceImpl implements TableService {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    BookTableDetailsRepository bookTableDetailsRepository;
 
 
     @Override
@@ -91,8 +96,7 @@ public class TableServiceImpl implements TableService {
         if (!existTable.isPresent()) {
 
             throw new RuntimeException(" Table not found ");
-        }
-        else {
+        } else {
             tableRepository.delete(existTable.get());
         }
         return null;
@@ -103,11 +107,15 @@ public class TableServiceImpl implements TableService {
 
         List<TableTop> tableTops = tableRepository.findAllFreeTable();
 
-         HashSet<TableTop> tableTopSet = (HashSet<TableTop>) tableTops.stream().filter(t -> t.getCapacity() >= capacity ).collect(Collectors.toSet());
-         TreeSet<TableTop> tableTopTreeSet=new TreeSet<>();
-         tableTopTreeSet.addAll(tableTopSet);
+        tableTops.stream().forEach(System.out::println);
 
-        tableTopTreeSet.stream().forEach(System.out::println);
+        BookTableDetails bookTableDetails = new BookTableDetails();
+
+        HashSet<TableTop> tableTopSet = (HashSet<TableTop>) tableTops.stream().filter(t -> t.getCapacity() >= capacity).collect(Collectors.toSet());
+        TreeSet<TableTop> tableTopTreeSet = new TreeSet<>();
+        tableTopTreeSet.addAll(tableTopSet);
+
+        //tableTopTreeSet.stream().forEach(System.out::println);
 
         if (tableTopTreeSet.isEmpty()) {
             throw new RuntimeException("All tables are occupied !!");
@@ -117,19 +125,32 @@ public class TableServiceImpl implements TableService {
         freeTable.setStatus("booked");
 
         tableRepository.save(freeTable);
-        Optional<Customer> existCustomer=customerRepository.findByPhoneNumber(customer.getPhoneNumber());
-        if(existCustomer.isPresent()) {
+        Optional<Customer> existCustomer = customerRepository.findByPhoneNumber(customer.getPhoneNumber());
+        if (existCustomer.isPresent()) {
 
             customerRepository.save(existCustomer.get());
-        }
-        else {
+
+            bookTableDetails.setTableId(freeTable.getId());
+            bookTableDetails.setCustomerId(existCustomer.get().getId());
+
+            bookTableDetails.setBookedDate(new Date());
+
+            bookTableDetailsRepository.save(bookTableDetails);
+
+        } else {
             customer.setCreatedAt(new Date());
-            customerRepository.save(customer);
+            Customer customer1 = customerRepository.save(customer);
+
+            bookTableDetails.setTableId(freeTable.getId());
+            bookTableDetails.setCustomerId(customer1.getId());
+            bookTableDetails.setBookedDate(new Date());
+            bookTableDetailsRepository.save(bookTableDetails);
+
         }
+
 
         return freeTable;
     }
-
 
 
     // Adding comment to merge in master

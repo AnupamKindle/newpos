@@ -12,6 +12,6 @@ public interface TableRepository extends JpaRepository<TableTop,Long> {
     Optional<TableTop> findByTableName(String name);
 
 
-    @Query(value = "SELECT * FROM table_top t WHERE t.status ='free' ", nativeQuery = true)
+    @Query( value = "SELECT t FROM TableTop t WHERE t.status like '%free%' ")
     List<TableTop> findAllFreeTable();
 }
