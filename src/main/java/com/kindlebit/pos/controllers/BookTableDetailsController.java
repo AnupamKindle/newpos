@@ -29,10 +29,7 @@ public class BookTableDetailsController {
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public Response bookingStatus(@RequestParam String customerName, @RequestParam
       String bookedDate, @RequestParam String phoneNumber) throws ParseException {
-
-
-
-
+//testing for git
         BookTableDTO bookTableDTO = bookTableDetailsService.bookTableStatus(customerName,bookedDate,phoneNumber);
         Response response=new Response();
         response.setMessage("Booking for  "+bookTableDTO.getCustomerName()+" on "  + bookedDate);
