@@ -35,7 +35,7 @@ public class BookTableDetailsController {
 
         BookTableDTO bookTableDTO = bookTableDetailsService.bookTableStatus(customerName,bookedDate,phoneNumber);
         Response response=new Response();
-        response.setMessage("Booking for  "+ bookedDate);
+        response.setMessage("Booking for  "+bookTableDTO.getCustomerName()+" on "  + bookedDate);
         response.setStatusCode(200);
         response.setBody(bookTableDTO);
         return response;
