@@ -1,15 +1,18 @@
 package com.kindlebit.pos.controllers;
 
 
+import com.kindlebit.pos.dto.QuantityDTO;
 import com.kindlebit.pos.models.Pantry;
 import com.kindlebit.pos.models.TableTop;
 import com.kindlebit.pos.service.PantryService;
 import com.kindlebit.pos.utill.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -60,6 +63,30 @@ public Response newTable(@RequestBody Pantry pantry) {
 
 }
 
+
+    @GetMapping("/lit-of-low-quantity")
+    //@Scheduled(fixedDelay = 1000, initialDelay = 1000)
+    //@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public Response lowQuantityItems()
+    {
+        Response response = new Response();
+        try {
+
+
+            List<QuantityDTO> quantityDTOS = pantryService.lessQuantityInPantry();
+
+            response.setBody(quantityDTOS);
+            response.setStatusCode(200);
+            response.setMessage(" These are the items which are low in quantity pantry ");
+            return response;
+        }
+        catch (Exception e)
+        {
+e.printStackTrace();
+
+        }
+        return response;
+    }
 
 
 

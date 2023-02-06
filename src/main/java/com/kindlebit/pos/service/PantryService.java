@@ -1,5 +1,6 @@
 package com.kindlebit.pos.service;
 
+import com.kindlebit.pos.dto.QuantityDTO;
 import com.kindlebit.pos.models.Pantry;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface PantryService {
     Pantry fetchItem(String itemName,Integer quantity);
 
     Integer toKnowQuantity(String itemName);
+
+    List<QuantityDTO> lessQuantityInPantry();
 }

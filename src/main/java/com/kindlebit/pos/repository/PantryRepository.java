@@ -3,13 +3,19 @@ package com.kindlebit.pos.repository;
 
 import com.kindlebit.pos.models.Pantry;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
 
+
+import java.util.List;
 import java.util.Optional;
 
-@Repository
+
 public interface PantryRepository extends JpaRepository<Pantry,Long> {
 
     Optional<Pantry> findByItemName(String itemName);
+
+
+    @Query(value = "SELECT p FROM Pantry p WHERE p.quantity<=8")
+    List<Pantry> getAllLowQuantity();
 
 }

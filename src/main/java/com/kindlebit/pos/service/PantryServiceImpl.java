@@ -1,16 +1,14 @@
 package com.kindlebit.pos.service;
 
 
+import com.kindlebit.pos.dto.QuantityDTO;
 import com.kindlebit.pos.models.Pantry;
 import com.kindlebit.pos.repository.PantryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -84,4 +82,25 @@ public class PantryServiceImpl implements PantryService{
         Integer presentQuantity=pantry.get().getQuantity();
         return presentQuantity;
     }
+
+
+
+    @Override
+    public List<QuantityDTO> lessQuantityInPantry() {
+
+        List<Pantry> lowQuantityList= pantryRepository.getAllLowQuantity();
+        List<QuantityDTO> quantityDTOS=new ArrayList<>();
+
+        for (Pantry p:lowQuantityList)
+        {
+            QuantityDTO quantityDTO=new QuantityDTO();
+            quantityDTO.setItemName(p.getItemName());
+            quantityDTO.setQuantity(p.getQuantity());
+            quantityDTOS.add(quantityDTO);
+        }
+        return quantityDTOS;
+    }
+
+
+
 }
