@@ -11,9 +11,8 @@ public interface CustomerRepository extends JpaRepository<Customer,Long> {
 
     Optional<Customer> findByPhoneNumber(String phoneNumber);
 
-
-/*   @Query(value = "SELECT * FROM customer c WHERE c.name like '%:name%' and c.phone_number=':phoneNumber' ", nativeQuery = true)
-    Optional<Customer> findByNameAndPhoneNumber(@Param("name") String name, @Param("phoneNumber")String phoneNumber);*/
+    @Query(value = "SELECT * FROM customer c WHERE c.name like CONCAT(?1, '%') and c.phone_number=?2", nativeQuery = true)
+    Optional<Customer> findByNameAndPhoneNumber( String name,String phoneNumber);
 
     Optional<Customer> findByName(String name);
 

@@ -27,29 +27,29 @@ public class BookTableDetailsServiceImpl implements BookTableDetailsService{
     @Autowired
     BookTableDetailsRepository bookTableDetailsRepository;
 
+
+    /***
+     *
+     * @param customerName
+     * @param bookedDate
+     * @param phoneNumber
+     * @return
+     * @throws ParseException
+     *
+     * This method is used for to know the status of book table either it is book or not.
+     * With associated customer.
+     */
     @Override
     public BookTableDTO bookTableStatus(String customerName, String bookedDate, String phoneNumber) throws ParseException {
 
-
-        System.out.println(customerName+" ====================>>>" + phoneNumber);
         Optional<Customer> customer= customerRepository.findByPhoneNumber(phoneNumber);
-
-
-
         if(!customer.isPresent())
         {
             throw new RuntimeException(" Sorry no booking for this customer .");
         }
         Long customerId= customer.get().getId();
 
-        System.out.println("=================>>>>>>"+customerId);
-
-        Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(bookedDate);
-
-        System.out.println("Date=================>>>>>>"+date1.toString());
-
         Optional<BookTableDetails> bookTableDetails =bookTableDetailsRepository.findByCustomerIdAndBookedDate(customerId,bookedDate);
-
         if(!bookTableDetails.isPresent())
         {
             throw new RuntimeException(" Sorry no booking in given date. ");

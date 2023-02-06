@@ -3,18 +3,14 @@ package com.kindlebit.pos.controllers;
 
 import com.kindlebit.pos.models.Customer;
 import com.kindlebit.pos.models.TableTop;
-import com.kindlebit.pos.payload.response.JwtResponse;
 import com.kindlebit.pos.service.TableService;
 import com.kindlebit.pos.utill.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -83,7 +79,6 @@ public class TableController {
         return response;
 
     }
-
 
 
 
