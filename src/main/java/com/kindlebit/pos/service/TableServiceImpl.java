@@ -98,8 +98,8 @@ public class TableServiceImpl implements TableService {
             throw new RuntimeException(" Table not found ");
         } else {
             tableRepository.delete(existTable.get());
+            return true;
         }
-        return null;
     }
 
     @Override

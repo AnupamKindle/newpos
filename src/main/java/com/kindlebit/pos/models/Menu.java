@@ -7,18 +7,15 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.util.Date;
 
+
 @Entity
-public class Customer {
+public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "type")
+    private String type;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -37,20 +34,12 @@ public class Customer {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Date getCreatedAt() {

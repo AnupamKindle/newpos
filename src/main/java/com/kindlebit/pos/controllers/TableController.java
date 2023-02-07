@@ -75,7 +75,7 @@ public class TableController {
         Response response=new Response();
         response.setMessage(" Table has been deleted . ");
         response.setStatusCode(200);
-        response.setBody(null);
+        response.setBody(tableTops);
         return response;
 
     }
