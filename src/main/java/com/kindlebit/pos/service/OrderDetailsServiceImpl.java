@@ -5,12 +5,11 @@ import com.kindlebit.pos.models.OrderDetails;
 import com.kindlebit.pos.models.Orders;
 import com.kindlebit.pos.models.Recipe;
 import com.kindlebit.pos.repository.OrderDetailsRepository;
-import com.kindlebit.pos.repository.OrderRepository;
+import com.kindlebit.pos.repository.OrdersRepository;
 import com.kindlebit.pos.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -18,7 +17,7 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
 
 
     @Autowired
-    OrderRepository orderRepository;
+    OrdersRepository orderRepository;
 
     @Autowired
     RecipeRepository recipeRepository;

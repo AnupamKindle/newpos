@@ -4,7 +4,6 @@ import com.kindlebit.pos.models.Customer;
 
 import com.kindlebit.pos.models.Orders;
 import com.kindlebit.pos.repository.CustomerRepository;
-import com.kindlebit.pos.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
