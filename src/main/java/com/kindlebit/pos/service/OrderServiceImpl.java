@@ -3,7 +3,10 @@ package com.kindlebit.pos.service;
 import com.kindlebit.pos.models.Customer;
 
 import com.kindlebit.pos.models.Orders;
+import com.kindlebit.pos.models.TableTop;
 import com.kindlebit.pos.repository.CustomerRepository;
+import com.kindlebit.pos.repository.OrdersRepository;
+import com.kindlebit.pos.repository.TableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +17,14 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService{
 
     @Autowired
-    OrderRepository orderRepository;
+    OrdersRepository orderRepository;
 
     @Autowired
     CustomerRepository customerRepository;
+
+
+    @Autowired
+    TableRepository tableRepository;
 
     @Override
     public Orders placeOrder(Orders order, Long customerId) {
@@ -33,12 +40,22 @@ public class OrderServiceImpl implements OrderService{
         orderDB.setOrderType(order.getOrderType());
         orderDB.setCustomerId(order.getCustomerId());
         orderDB.setStatus("unpaid");
-        orderDB.setGrandTotal(0);
+        orderDB.setGrandTotal(0.0);
         if(order.getOrderType().toLowerCase().equals("delivery")) {
             orderDB.setTableName("NA");
         }
         else {
-            orderDB.setTableName(order.getTableName());
+
+            Optional<TableTop> tableTop= tableRepository.findByTableName(order.getTableName());
+            if(!tableTop.isPresent())
+            {
+                throw new RuntimeException(" Table name not found !! ");
+            }else {
+                tableTop.get().setStatus("booked");
+                tableRepository.save(tableTop.get());
+                orderDB.setTableName(order.getTableName());
+            }
+
         }
         orderDB.setCustomerId(customerId);
         orderRepository.save(orderDB);

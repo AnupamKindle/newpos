@@ -33,7 +33,7 @@ public class Orders {
 
 
     @Column(name = "grand_total")
-    private Integer grandTotal;
+    private Double grandTotal;
 
 
     public Long getId() {
@@ -84,11 +84,11 @@ public class Orders {
         this.status = status;
     }
 
-    public Integer getGrandTotal() {
+    public Double getGrandTotal() {
         return grandTotal;
     }
 
-    public void setGrandTotal(Integer grandTotal) {
+    public void setGrandTotal(Double grandTotal) {
         this.grandTotal = grandTotal;
     }
 }
