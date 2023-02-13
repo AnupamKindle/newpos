@@ -12,5 +12,7 @@ public interface OrderDetailsService {
 
     InvoiceDTO invoice(Long orderId, Double discount);
 
+    OrderDetails editEntryInOrder(Long orderDetailsId, OrderDetails orderDetails);
+
 
 }

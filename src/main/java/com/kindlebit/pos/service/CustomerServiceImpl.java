@@ -21,7 +21,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer createCustomer(Customer customer) {
         Customer customerDb=new Customer();
         customerDb.setCreatedAt(new Date());
-        customerDb.setName(customer.getName());
+        customerDb.setName(customer.getName().toLowerCase());
         customerDb.setPhoneNumber(customer.getPhoneNumber());
         customerRepository.save(customerDb);
         return customerDb;
@@ -60,7 +60,7 @@ public class CustomerServiceImpl implements CustomerService {
             Date createdDate= existCustomer.get().getCreatedAt();
             Date updatedDate = new Date();
             editCustomer.setId(id);
-            editCustomer.setName(name);
+            editCustomer.setName(name.toLowerCase());
             editCustomer.setUpdatedAt(updatedDate);
             editCustomer.setCreatedAt(createdDate);
             editCustomer.setPhoneNumber(phoneNumber);

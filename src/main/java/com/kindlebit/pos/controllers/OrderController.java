@@ -46,6 +46,20 @@ OrderService orderService;
     }
 
 
+    @PutMapping("/edit-order")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Response editOrder(@RequestParam Long orderId,@RequestBody Orders order)
+    {
+        Orders orderResponse=  orderService.editOrder(order,orderId);
+        Response response = new Response();
+        response.setBody(orderResponse);
+        response.setStatusCode(200);
+        response.setMessage(" Order has been edited  ");
+        return response;
+
+    }
+
+
 
 
 

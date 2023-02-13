@@ -53,7 +53,18 @@ public class OrderDetailsController {
 
     }
 
+    @PutMapping("/edit-order-details")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Response editOrderEntryDetails(@RequestParam Long orderDetailsId,@RequestBody OrderDetails order)
+    {
+        OrderDetails editOrderDetails = orderDetailsService.editEntryInOrder(orderDetailsId,order);
+        Response response = new Response();
+        response.setBody(editOrderDetails);
+        response.setStatusCode(200);
+        response.setMessage(" order entry has been edited  ");
+        return response;
 
+    }
 
 
 

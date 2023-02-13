@@ -9,7 +9,7 @@ public interface OrderService {
 
     Orders getOrder(Long orderId);
 
-
+    Orders editOrder(Orders order,Long orderId);
 
 
 }

@@ -31,7 +31,7 @@ public class RecipeController {
                               @RequestParam Long menuId,@RequestParam MultipartFile file) throws IOException {
 
         Recipe recipe=new Recipe();
-        recipe.setName(name);
+        recipe.setName(name.toLowerCase());
         recipe.setVeg(veg);
         recipe.setDescription(description);
         recipe.setFullPrice(fullPrice);
@@ -101,7 +101,7 @@ public class RecipeController {
         Recipe recipe=new Recipe();
         recipe.setImageData(file.getBytes());
 
-        recipe.setName(name);
+        recipe.setName(name.toLowerCase());
         recipe.setVeg(veg);
         recipe.setDescription(description);
         recipe.setFullPrice(fullPrice);

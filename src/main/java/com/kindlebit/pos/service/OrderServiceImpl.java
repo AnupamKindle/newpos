@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService{
             {
                 throw new RuntimeException(" Table name not found !! ");
             }else {
-                tableTop.get().setStatus("booked");
+                tableTop.get().setStatus(" active ");
                 tableRepository.save(tableTop.get());
                 orderDB.setTableName(order.getTableName());
             }
@@ -71,6 +71,42 @@ public class OrderServiceImpl implements OrderService{
             throw new RuntimeException(" Order not found ");
         }
         return existedOrder.get();
+    }
+
+    @Override
+    public Orders editOrder(Orders order,Long orderId) {
+
+
+        Optional<Orders> orderDb = orderRepository.findById(orderId);
+
+        if(!orderDb.isPresent())
+        {
+            throw new RuntimeException(" Order Id not found ");
+        }
+        else{
+
+            Orders editOrderDb = new Orders();
+            Date orderDate = ( order.getOrderDate() == null ? orderDb.get().getOrderDate():order.getOrderDate());
+            Long customerId = ( order.getCustomerId() == null ? orderDb.get().getCustomerId() :order.getCustomerId());
+            String orderType = ( order.getOrderType()== null || order.getOrderType()==" " ? orderDb.get().getOrderType():order.getOrderType() );
+            String tableName =(order.getTableName()== null || order.getTableName()==" "?orderDb.get().getTableName():order.getTableName());
+            Double grandTotal =(order.getGrandTotal()==0 ? orderDb.get().getGrandTotal() : order.getGrandTotal() ) ;
+
+            String status = ( order.getStatus()== null || order.getStatus()==" " ? orderDb.get().getStatus():order.getStatus());
+
+            editOrderDb.setId(orderDb.get().getId());
+            editOrderDb.setOrderDate(orderDate);
+            editOrderDb.setOrderType(orderType);
+            editOrderDb.setStatus(status);
+            editOrderDb.setTableName(tableName);
+            editOrderDb.setCustomerId(customerId);
+            editOrderDb.setGrandTotal(grandTotal);
+
+            orderRepository.save(editOrderDb);
+
+            return editOrderDb;
+        }
+
     }
 
 

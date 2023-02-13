@@ -42,7 +42,7 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
             throw new RuntimeException(" Order not found ");
         }
         String recipeName= orderDetails.getRecipeName();
-        Recipe recipe = recipeRepository.findByName(recipeName);
+        Recipe recipe = recipeRepository.findByName(recipeName.toLowerCase());
         Integer halfPrice = recipe.getHalfPrice();
         Integer fullPrice = recipe.getFullPrice();
         Integer halfQuantity = orderDetails.getHalfQuantity();
@@ -97,6 +97,53 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
 
 
         return invoiceDTO;
+    }
+
+    @Override
+    public OrderDetails editEntryInOrder(Long orderDetailsId, OrderDetails orderDetails) {
+
+        Optional<OrderDetails> orderDetailsExist = orderDetailsRepository.findById(orderDetailsId);
+        Integer totalAmount=0;
+        OrderDetails editOrderDetails=new OrderDetails();
+        if(!orderDetailsExist.isPresent())
+        {
+            throw new RuntimeException("  Order Details Id not found  ");
+        }
+        else {
+            String recipeName = (orderDetails.getRecipeName()==" " && orderDetails.getRecipeName()==null ? orderDetailsExist.get().getRecipeName():orderDetails.getRecipeName());
+
+            Recipe existRecipe =recipeRepository.findByName(recipeName.toLowerCase());
+            if(existRecipe==null)
+            {
+                throw new RuntimeException("Not valid recipe name");
+            }
+            Long orderId = (orderDetails.getOrderId()==0 ?orderDetailsExist.get().getOrderId():orderDetails.getOrderId());
+
+            Integer halfQuantity =(orderDetails.getHalfQuantity() ==0 ? orderDetailsExist.get().getHalfQuantity():orderDetails.getHalfQuantity());
+
+            Integer fullQuantity =(orderDetails.getFullQuantity() !=0 ? orderDetails.getFullQuantity():orderDetailsExist.get().getFullQuantity());
+
+            if(halfQuantity !=0 && fullQuantity!=0)
+            {
+                 totalAmount =(halfQuantity* existRecipe.getHalfPrice()+fullQuantity*existRecipe.getFullPrice());
+            }else {
+                 totalAmount = (orderDetails.getTotalAmount() != 0 ? orderDetails.getTotalAmount() : orderDetailsExist.get().getTotalAmount());
+            }
+            editOrderDetails.setId(orderDetailsExist.get().getId());
+            editOrderDetails.setRecipeName(recipeName);
+            editOrderDetails.setHalfQuantity(halfQuantity);
+            editOrderDetails.setFullQuantity(fullQuantity);
+            editOrderDetails.setTotalAmount(totalAmount);
+            editOrderDetails.setOrderId(orderId);
+
+            orderDetailsRepository.save(editOrderDetails);
+            return editOrderDetails;
+
+        }
+
+
+
+
     }
 
 
