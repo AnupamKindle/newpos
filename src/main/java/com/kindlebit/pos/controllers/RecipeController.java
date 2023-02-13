@@ -111,7 +111,7 @@ public class RecipeController {
         Response response = new Response();
         response.setBody(recipeResponse);
         response.setStatusCode(200);
-        response.setMessage(" Recipe has been deleted ");
+        response.setMessage(" Recipe has been updated ");
         return response;
 
     }
