@@ -40,7 +40,7 @@ public class RecipeController {
         Response response = new Response();
         response.setBody(recipeResponse);
         response.setStatusCode(200);
-        response.setMessage("table has been saved");
+        response.setMessage("A new recipe has been added ");
         return response;
     }
 
@@ -116,6 +116,20 @@ public class RecipeController {
 
     }
 
+
+
+    @GetMapping("/all-veg-recipe-by-menu")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public Response allVegRecipeByMenu(@RequestParam Long menuId) throws Exception {
+
+        List<Recipe> recipeResponse = recipeService.allVegRecipeByMenuId(menuId);
+        Response response = new Response();
+        response.setBody(recipeResponse);
+        response.setStatusCode(200);
+        response.setMessage(" All Veg recipe according to menu ");
+        return response;
+
+    }
 
 
 

@@ -16,4 +16,6 @@ public interface RecipeService {
 
     Boolean deleteRecipe(Long recipeId) throws  Exception;
     Recipe editRecipe(Recipe recipe,Long recipeId,Long menuUId);
+
+    List<Recipe> allVegRecipeByMenuId(Long menuId);
 }

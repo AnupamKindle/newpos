@@ -129,5 +129,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     }
 
+    @Override
+    public List<Recipe> allVegRecipeByMenuId(Long menuId) {
+
+        List<Recipe> recipeList= recipeRepository.allVegRecipesByMenuId(menuId);
+
+        return recipeList;
+    }
+
 
 }
