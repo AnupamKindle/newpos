@@ -52,7 +52,7 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
         orderDetailsDB.setHalfQuantity(orderDetails.getHalfQuantity());
         orderDetailsDB.setOrderId(orders.get().getId());
         orderDetailsDB.setTotalAmount(totalAmount);
-        orderDetailsDB.setRecipeName(recipeName);
+        orderDetailsDB.setRecipeName(recipeName.toLowerCase());
         orderDetailsRepository.save(orderDetailsDB);
         return orderDetailsDB;
     }
@@ -65,7 +65,7 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
         
         Double gstAmount = (totalSum * 18/100)/100;
 
-        System.out.println("======================================>>>>"+gstAmount +"     total Sum   "+ totalSum);
+
         totalSum = totalSum + gstAmount;
 
         discount = totalSum  * (discount/100);
@@ -144,6 +144,13 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
 
 
 
+    }
+
+    @Override
+    public List<OrderDetails> allEntryAccordingToOrderId(Long orderId) {
+
+        List<OrderDetails> orderDetailsList = orderDetailsRepository.listOfOrderItem(orderId);
+        return orderDetailsList;
     }
 
 

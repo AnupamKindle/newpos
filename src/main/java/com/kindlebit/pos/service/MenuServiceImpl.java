@@ -24,7 +24,7 @@ public class MenuServiceImpl implements MenuService {
             throw new RuntimeException(" This type of Menu is already exists ");
         } else {
             Menu newMenu = new Menu();
-            newMenu.setType(menu.getType());
+            newMenu.setType(menu.getType().toLowerCase());
             newMenu.setCreatedAt(new Date());
             menuRepository.save(newMenu);
             return Optional.of(newMenu);
@@ -41,7 +41,7 @@ public class MenuServiceImpl implements MenuService {
         }
         String type = (menu.getType() != " " ? menu.getType() : existMenu.get().getType());
         updatedMenu.setId(menuId);
-        updatedMenu.setType(type);
+        updatedMenu.setType(type.toLowerCase());
         updatedMenu.setUpdatedAt(new Date());
         updatedMenu.setCreatedAt(existMenu.get().getCreatedAt());
         menuRepository.save(updatedMenu);

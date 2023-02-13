@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -62,6 +64,20 @@ public class OrderDetailsController {
         response.setBody(editOrderDetails);
         response.setStatusCode(200);
         response.setMessage(" order entry has been edited  ");
+        return response;
+
+    }
+
+    @GetMapping("/list-of-entry-according-to-order-id")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public Response listOfEntriesAccordingToOrderId(@RequestParam Long orderId)
+    {
+
+        List<OrderDetails> orderDetailsList = orderDetailsService.allEntryAccordingToOrderId(orderId);
+        Response response = new Response();
+        response.setBody(orderDetailsList);
+        response.setStatusCode(200);
+        response.setMessage(" Entries according to order ");
         return response;
 
     }

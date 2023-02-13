@@ -22,14 +22,14 @@ public class PantryServiceImpl implements PantryService{
 
         Pantry pantryDb=new Pantry();
 
-        Optional<Pantry> existingItem =pantryRepository.findByItemName(pantry.getItemName());
+        Optional<Pantry> existingItem =pantryRepository.findByItemName(pantry.getItemName().toLowerCase());
         if(existingItem.isPresent()) {
 
         throw  new RuntimeException(" This Item is already in pantry ");
         }
 
         pantryDb.setCreatedAt(new Date());
-        pantryDb.setItemName(pantry.getItemName());
+        pantryDb.setItemName(pantry.getItemName().toLowerCase());
         pantryDb.setQuantity(pantry.getQuantity());
         pantryDb.setRackLocation(pantry.getRackLocation());
         Pantry pantryResponse =   pantryRepository.save(pantryDb);
@@ -39,18 +39,54 @@ public class PantryServiceImpl implements PantryService{
     @Override
     public boolean deleteItem(Long itemId) {
 
+        Optional<Pantry>  existingItem= pantryRepository.findById(itemId);
 
-        return false;
+        pantryRepository.delete(existingItem.get());
+
+        return true;
     }
 
     @Override
     public Pantry updateItem(Long itemId, Pantry pantry) {
-        return null;
+
+        Optional<Pantry>  existingItem= pantryRepository.findById(itemId);
+
+        Pantry updatedPantry = new Pantry();
+
+        if(!existingItem.isPresent())
+        {
+            throw new RuntimeException(" Item not found ..");
+        }else {
+
+            Long id= existingItem.get().getId();
+            int quantity= (pantry.getQuantity()!=0?pantry.getQuantity():existingItem.get().getQuantity());
+
+            String rackLocation = (pantry.getRackLocation()!=null && pantry.getRackLocation() !=" "?pantry.getRackLocation():existingItem.get().getRackLocation());
+
+            Date createdDate = existingItem.get().getCreatedAt();
+
+            Date updatedDate =new Date();
+
+            String itemName =(pantry.getItemName()!= null && pantry.getItemName()!=" "? pantry.getItemName():existingItem.get().getItemName());
+
+
+            updatedPantry.setId(id);
+            updatedPantry.setItemName(itemName);
+            updatedPantry.setUpdatedAt(updatedDate);
+            updatedPantry.setCreatedAt(createdDate);
+            updatedPantry.setRackLocation(rackLocation);
+            updatedPantry.setQuantity(quantity);
+
+            pantryRepository.save(updatedPantry);
+            return updatedPantry;
+
+        }
     }
 
     @Override
     public List<Pantry> getAllItems() {
-        return null;
+        List<Pantry> pantryList =pantryRepository.findAll();
+        return pantryList;
     }
 
     @Override

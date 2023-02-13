@@ -5,6 +5,8 @@ import com.kindlebit.pos.dto.InvoiceDTO;
 import com.kindlebit.pos.models.OrderDetails;
 import com.kindlebit.pos.models.Orders;
 
+import java.util.List;
+
 public interface OrderDetailsService {
 
 
@@ -13,6 +15,8 @@ public interface OrderDetailsService {
     InvoiceDTO invoice(Long orderId, Double discount);
 
     OrderDetails editEntryInOrder(Long orderDetailsId, OrderDetails orderDetails);
+
+    List<OrderDetails> allEntryAccordingToOrderId(Long orderId);
 
 
 }

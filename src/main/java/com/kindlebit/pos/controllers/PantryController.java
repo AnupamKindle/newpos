@@ -25,7 +25,7 @@ public class PantryController {
 
 @PostMapping("/add-new-item-in-pantry")
 @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-public Response newTable(@RequestBody Pantry pantry) {
+public Response newItem(@RequestBody Pantry pantry) {
 
     Pantry pantryBody=pantryService.storeNewItem(pantry);
     Response response = new Response();
@@ -65,16 +65,13 @@ public Response newTable(@RequestBody Pantry pantry) {
 
 
     @GetMapping("/lit-of-low-quantity")
-    //@Scheduled(fixedDelay = 1000, initialDelay = 1000)
-    //@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public Response lowQuantityItems()
     {
         Response response = new Response();
         try {
 
-
             List<QuantityDTO> quantityDTOS = pantryService.lessQuantityInPantry();
-
             response.setBody(quantityDTOS);
             response.setStatusCode(200);
             response.setMessage(" These are the items which are low in quantity pantry ");
@@ -83,10 +80,39 @@ public Response newTable(@RequestBody Pantry pantry) {
         catch (Exception e)
         {
 e.printStackTrace();
-
         }
         return response;
     }
+
+    @PutMapping("/update-item")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Response editItem(@RequestParam Long itemId,@RequestBody Pantry pantry)
+    {
+
+        Pantry responsePantry=pantryService.updateItem(itemId,pantry);
+        Response response = new Response();
+        response.setBody(responsePantry);
+        response.setStatusCode(200);
+        response.setMessage(" Item has been updated ");
+        return response;
+
+    }
+
+
+    @DeleteMapping("/delete-item")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Response deleteItem(@RequestParam Long itemId)
+    {
+
+        Boolean responseItem=pantryService.deleteItem(itemId);
+        Response response = new Response();
+        response.setBody(responseItem);
+        response.setStatusCode(200);
+        response.setMessage(" Item has been deleted from pantry");
+        return response;
+
+    }
+
 
 
 
