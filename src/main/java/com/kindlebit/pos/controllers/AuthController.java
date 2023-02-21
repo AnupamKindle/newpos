@@ -119,6 +119,7 @@ public class AuthController {
       });
     }
 
+    user.setPhoneNumber(signUpRequest.getPhoneNumber());
     user.setRoles(roles);
     userRepository.save(user);
 
@@ -148,6 +149,8 @@ Long id = userId;
 String userName = (signUpRequest.getUsername() != null && signUpRequest.getUsername() !=" "? signUpRequest.getUsername(): user.get().getUsername() );
 
 String email = (signUpRequest.getEmail() != null && signUpRequest.getEmail() !=" "? signUpRequest.getEmail(): user.get().getEmail());
+
+String phoneNumber = (signUpRequest.getPhoneNumber() != null && signUpRequest.getPhoneNumber() !=" "? signUpRequest.getPhoneNumber(): user.get().getPhoneNumber());
 
 String password = encoder.encode ((signUpRequest.getPassword() != null && signUpRequest.getPassword() !=" "? signUpRequest.getPassword(): user.get().getPassword()));
 
@@ -188,6 +191,7 @@ userDb.setUsername(userName);
 userDb.setEmail(email);
 userDb.setPassword(password);
 userDb.setRoles(roles);
+userDb.setPhoneNumber(phoneNumber);
 userRepository.save(userDb);
 
 return ResponseEntity.ok(new MessageResponse("User has been updated "));
