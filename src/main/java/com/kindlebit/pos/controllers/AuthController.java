@@ -200,6 +200,15 @@ return ResponseEntity.ok(new MessageResponse("User has been updated "));
 
 
 
+  @GetMapping("/users-list")
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<?> usersList() {
+
+    List<User> users=userRepository.findAll();
+    return ResponseEntity.ok(users);
+  }
+
+
 
 
 
