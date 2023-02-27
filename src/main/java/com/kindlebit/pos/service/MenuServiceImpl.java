@@ -2,7 +2,9 @@ package com.kindlebit.pos.service;
 
 
 import com.kindlebit.pos.models.Menu;
+import com.kindlebit.pos.models.Recipe;
 import com.kindlebit.pos.repository.MenuRepository;
+import com.kindlebit.pos.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,11 @@ public class MenuServiceImpl implements MenuService {
 
     @Autowired
     MenuRepository menuRepository;
+
+
+    @Autowired
+    RecipeRepository recipeRepository;
+
 
     @Override
     public Optional<Menu> newMenu(Menu menu) {
@@ -54,6 +61,9 @@ public class MenuServiceImpl implements MenuService {
         if (!existMenu.isPresent()) {
             throw new RuntimeException(" Menu not exist !! ");
         } else {
+
+            List<Recipe> recipeListByMenu = recipeRepository.findAllByMenuId(menuId);
+            recipeRepository.deleteAll(recipeListByMenu);
             menuRepository.delete(existMenu.get());
             return true;
         }
