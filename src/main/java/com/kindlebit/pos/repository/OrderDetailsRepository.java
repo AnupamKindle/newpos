@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderDetailsRepository extends JpaRepository<OrderDetails,Long> {
 
@@ -18,5 +19,9 @@ public interface OrderDetailsRepository extends JpaRepository<OrderDetails,Long>
 
     @Query("Select od from OrderDetails od where od.orderId=?1")
     List<OrderDetails> listOfOrderItem(Long orderId);
+
+
+    @Query("Select od from OrderDetails od where od.recipeName=?1 and od.orderId=?2")
+    Optional<OrderDetails> findByRecipeName(String recipeName, Long orderId);
 
 }

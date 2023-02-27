@@ -132,6 +132,19 @@ public class RecipeController {
     }
 
 
+    @GetMapping("/search-recipe")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public Response searchRecipe(@RequestParam String recipeName) throws Exception {
+
+        Recipe recipeResponse = recipeService.searchRecipeByName(recipeName);
+        Response response = new Response();
+        response.setBody(recipeResponse);
+        response.setStatusCode(200);
+        response.setMessage(" Recipe Information according to name  ");
+        return response;
+
+    }
+
 
 
 

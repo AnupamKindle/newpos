@@ -48,6 +48,12 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
         Integer halfQuantity = orderDetails.getHalfQuantity();
         Integer fullQuantity = orderDetails.getFullQuantity();
         Integer totalAmount = (halfPrice * halfQuantity)+(fullPrice * fullQuantity );
+
+        Optional<OrderDetails> orderDetailsExistOb=orderDetailsRepository.findByRecipeName(recipeName.toLowerCase(),orderId);
+        if(orderDetailsExistOb.isPresent())
+        {
+            orderDetailsDB.setId(orderDetailsExistOb.get().getId());
+        }
         orderDetailsDB.setFullQuantity(orderDetails.getFullQuantity());
         orderDetailsDB.setHalfQuantity(orderDetails.getHalfQuantity());
         orderDetailsDB.setOrderId(orders.get().getId());
@@ -86,13 +92,14 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
         tableTop.get().setStatus("free");
         tableRepository.save(tableTop.get());
 
-        Customer customer= customerRepository.findById(orders.get().getCustomerId()).get();
+        //for now we are commenting customer ID
+        //Customer customer= customerRepository.findById(orders.get().getCustomerId()).get();
         invoiceDTO.setInvoiceDate(new Date());
         invoiceDTO.setOrderDetails(orderDetailsList);
         invoiceDTO.setStatus("paid");
         invoiceDTO.setAmountToBePaid(amountToBePaid);
         invoiceDTO.setTableName(tableName);
-        invoiceDTO.setCustomerName(customer.getName());
+       // invoiceDTO.setCustomerName(customer.getName());
         invoiceDTO.setDiscount(discount);
 
 

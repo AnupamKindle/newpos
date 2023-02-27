@@ -29,12 +29,14 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public Orders placeOrder(Orders order, Long customerId) {
 
-        Optional<Customer> existingCustomer= customerRepository.findById(customerId);
+        // For now we are commenting this code for current requirement
+
+       /* Optional<Customer> existingCustomer= customerRepository.findById(customerId);
 
         if(!existingCustomer.isPresent())
         {
             throw new RuntimeException(" Customer not found ");
-        }
+        }*/
         Orders orderDB=new Orders();
         orderDB.setOrderDate(new Date());
         orderDB.setOrderType(order.getOrderType());

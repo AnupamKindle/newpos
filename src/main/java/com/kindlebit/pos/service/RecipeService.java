@@ -18,4 +18,6 @@ public interface RecipeService {
     Recipe editRecipe(Recipe recipe,Long recipeId,Long menuUId);
 
     List<Recipe> allVegRecipeByMenuId(Long menuId);
+
+    Recipe searchRecipeByName(String recipeName);
 }

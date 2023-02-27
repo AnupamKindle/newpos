@@ -137,5 +137,16 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeList;
     }
 
+    @Override
+    public Recipe searchRecipeByName(String recipeName) {
+
+        Recipe recipe= recipeRepository.findByName(recipeName.toLowerCase());
+        if(recipe==null)
+        {
+            throw new RuntimeException("No such recipe found in any menu !! ");
+        }
+        return recipe;
+    }
+
 
 }
