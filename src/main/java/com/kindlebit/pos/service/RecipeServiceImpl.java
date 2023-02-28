@@ -38,6 +38,13 @@ public class RecipeServiceImpl implements RecipeService {
             throw  new RuntimeException(" sorry menu is not found ");
         }else {
 
+            Recipe sameRecipeName= recipeRepository.findByName(recipe.getName());
+
+            if(sameRecipeName !=null)
+            {
+                throw  new RuntimeException("This recipe aleready existed ");
+            }
+
             recipeDb.setMenu(menu.get());
             recipeDb.setName(recipe.getName());
             recipeDb.setVeg(recipe.getVeg());
@@ -80,11 +87,19 @@ public class RecipeServiceImpl implements RecipeService {
 
         Optional<Recipe> recipe =recipeRepository.findById(recipeId);
 
+       // Menu menu =recipe.get().getMenu();
+
+       // menu.setId(0l);
+
+        //Recipe recipe1=recipe.get();
+       // recipe1.setMenu(menu);
+        //recipeRepository.save(recipe1);
         if(!recipe.isPresent())
         {
             throw new RuntimeException(" Invalid recipeId ");
         }
         else {
+           // recipe.get().setMenu(0);
             recipeRepository.delete(recipe.get());
             return true;
         }
@@ -138,9 +153,10 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe searchRecipeByName(String recipeName) {
+    public List<Recipe> searchRecipeByName(String recipeName) {
 
-        Recipe recipe= recipeRepository.findByName(recipeName.toLowerCase());
+        List<Recipe> recipe= recipeRepository.searchRecipeByLikeName(recipeName);
+
         if(recipe==null)
         {
             throw new RuntimeException("No such recipe found in any menu !! ");

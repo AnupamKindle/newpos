@@ -14,6 +14,13 @@ public interface RecipeRepository extends JpaRepository<Recipe,Long> {
     Recipe findByName(String recipeName);
 
 
+
+    @Query( value = "SELECT r FROM Recipe r WHERE r.name LIKE  %?1% ")
+    List<Recipe> searchRecipeByLikeName(String name);
+
+
+
+
     @Query(value = "select * from recipe where menu_id=?1 and veg=1",nativeQuery = true)
     List<Recipe> allVegRecipesByMenuId(Long menuId);
 

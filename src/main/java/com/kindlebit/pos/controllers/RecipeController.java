@@ -136,11 +136,11 @@ public class RecipeController {
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public Response searchRecipe(@RequestParam String recipeName) throws Exception {
 
-        Recipe recipeResponse = recipeService.searchRecipeByName(recipeName);
+        List<Recipe> recipeResponse = recipeService.searchRecipeByName(recipeName);
         Response response = new Response();
         response.setBody(recipeResponse);
         response.setStatusCode(200);
-        response.setMessage(" Recipe Information according to name  ");
+        response.setMessage(" These all recipes according to name  ");
         return response;
 
     }

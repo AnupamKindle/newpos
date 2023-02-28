@@ -22,6 +22,7 @@ public class Menu {
     private Date createdAt;
 
 
+
     @LastModifiedDate
     @Column(name = "updated_at")
     private Date updatedAt;

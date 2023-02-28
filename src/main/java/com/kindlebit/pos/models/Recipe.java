@@ -24,8 +24,8 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "menu_id", referencedColumnName = "id")
+    @OneToOne(/*cascade = CascadeType.ALL*/)
+    //@JoinColumn(name = "menu_id", referencedColumnName = "id")
     private Menu menu;
 
     @Column(name = "name")
