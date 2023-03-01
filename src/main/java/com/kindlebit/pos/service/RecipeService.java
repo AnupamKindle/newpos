@@ -1,5 +1,6 @@
 package com.kindlebit.pos.service;
 
+import com.kindlebit.pos.dto.RecipeDTO;
 import com.kindlebit.pos.models.Recipe;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +11,7 @@ public interface RecipeService {
 
     Recipe newRecipe(MultipartFile file,Recipe recipe,Long menuId) throws IOException;
 
-    List<Recipe> recipesByMenu(Long menuId) throws Exception;
+    List<RecipeDTO> recipesByMenu(Long menuId) throws Exception;
 
     Recipe recipe(Long recipeId) throws Exception;
 

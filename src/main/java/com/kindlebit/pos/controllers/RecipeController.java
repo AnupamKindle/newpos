@@ -1,6 +1,7 @@
 package com.kindlebit.pos.controllers;
 
 
+import com.kindlebit.pos.dto.RecipeDTO;
 import com.kindlebit.pos.models.Recipe;
 
 import com.kindlebit.pos.service.RecipeService;
@@ -48,10 +49,10 @@ public class RecipeController {
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public Response RecipesByMenu(@RequestParam Long menuId) throws Exception {
 
-        List<Recipe> recipeList=recipeService.recipesByMenu(menuId);
+        List<RecipeDTO> recipeDTOS=recipeService.recipesByMenu(menuId);
 
         Response response = new Response();
-        response.setBody(recipeList);
+        response.setBody(recipeDTOS);
         response.setStatusCode(200);
         response.setMessage(" Recipe list according to menu ");
         return response;

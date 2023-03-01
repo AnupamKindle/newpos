@@ -88,9 +88,12 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
         orderRepository.save(orders.get());
         String tableName = orders.get().getTableName();
 
-       Optional<TableTop> tableTop = tableRepository.findByTableName(tableName);
-        tableTop.get().setStatus("free");
-        tableRepository.save(tableTop.get());
+        if(!(tableName.equals("NA"))) {
+            Optional<TableTop> tableTop = tableRepository.findByTableName(tableName);
+            tableTop.get().setStatus("free");
+
+            tableRepository.save(tableTop.get());
+        }
 
         //for now we are commenting customer ID
         //Customer customer= customerRepository.findById(orders.get().getCustomerId()).get();

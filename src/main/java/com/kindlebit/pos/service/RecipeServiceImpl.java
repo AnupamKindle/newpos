@@ -1,6 +1,7 @@
 package com.kindlebit.pos.service;
 
 
+import com.kindlebit.pos.dto.RecipeDTO;
 import com.kindlebit.pos.models.Menu;
 import com.kindlebit.pos.models.Recipe;
 import com.kindlebit.pos.repository.MenuRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -60,12 +62,39 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<Recipe> recipesByMenu(Long menuId) throws Exception {
+    public List<RecipeDTO> recipesByMenu(Long menuId) throws Exception {
         if (menuId == 0 && menuId == null) {
             throw new RuntimeException(" Invalid Menu Id ");
         } else {
             List<Recipe> recipeList = recipeRepository.findAllByMenuId(menuId);
-            return recipeList;}}
+
+
+
+            List<RecipeDTO> recipeDTOS=new ArrayList<RecipeDTO>();
+            for(Recipe recipe: recipeList)
+            {
+                RecipeDTO recipeDTO=new RecipeDTO();
+                recipeDTO.setDescription(recipe.getDescription());
+                recipeDTO.setMenu(recipe.getMenu());
+                recipeDTO.setCreatedAt(recipe.getCreatedAt());
+                recipeDTO.setId(recipe.getId());
+                recipeDTO.setName(recipe.getName());
+                recipeDTO.setFullPrice(recipe.getFullPrice());
+                recipeDTO.setHalfPrice(recipe.getHalfPrice());
+                recipeDTO.setImageData(recipe.getImageData());
+                recipeDTO.setUpdatedAt(recipe.getUpdatedAt());
+                recipeDTO.setVeg(recipe.getVeg());
+                recipeDTO.setFullQuantity(0);
+                recipeDTO.setHalfQuantity(0);
+
+
+
+                recipeDTOS.add(recipeDTO);
+            }
+
+            return recipeDTOS;
+        }
+    }
 
     @Override
     public Recipe recipe(Long recipeId) throws Exception {

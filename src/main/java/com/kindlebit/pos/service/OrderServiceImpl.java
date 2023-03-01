@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService{
             {
                 throw new RuntimeException(" Table name not found !! ");
             }else {
-                tableTop.get().setStatus(" active ");
+                tableTop.get().setStatus("active");
                 tableRepository.save(tableTop.get());
                 orderDB.setTableName(order.getTableName());
             }
