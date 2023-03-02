@@ -95,13 +95,17 @@ public class RecipeController {
     @PreAuthorize("hasRole('ADMIN')")
     public Response editRecipe(@RequestParam String name,@RequestParam Boolean veg,@RequestParam Integer halfPrice,
                                @RequestParam Integer fullPrice,@RequestParam String description,
-                               @RequestParam Long menuId,@RequestParam MultipartFile file,@RequestParam Long recipeId) throws Exception
+                               @RequestParam Long menuId,@RequestParam(value ="file", required=false) MultipartFile file ,@RequestParam Long recipeId) throws Exception
     {
 
 
         Recipe recipe=new Recipe();
-        recipe.setImageData(file.getBytes());
-
+        if(file!=null) {
+            recipe.setImageData(file.getBytes());
+        }
+        else {
+            recipe.setImageData(null);
+        }
         recipe.setName(name.toLowerCase());
         recipe.setVeg(veg);
         recipe.setDescription(description);

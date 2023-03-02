@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -153,14 +154,25 @@ public class RecipeServiceImpl implements RecipeService {
             Boolean veg = (recipe.getVeg() !=null ? recipe.getVeg() :existRecipe.get().getVeg() );
             Integer halfPrice =( (recipe.getHalfPrice() !=null && recipe.getHalfPrice()!=0) ? recipe.getHalfPrice() : existRecipe.get().getHalfPrice());
             Integer fullPrice = ( (recipe.getFullPrice() !=null && recipe.getFullPrice()!=0) ? recipe.getFullPrice() : existRecipe.get().getFullPrice());
-            byte[] imageData=(recipe.getImageData() !=null ? recipe.getImageData():existRecipe.get().getImageData());
+
+         if(recipe.getImageData()!=null) {
+             byte[] imageData = recipe.getImageData() ;
+
+             updatedRecipe.setImageData(imageData);
+         }
+         else
+         {
+             byte[] imageData= existRecipe.get().getImageData();
+             updatedRecipe.setImageData(imageData);
+         }
+
             String description = ((recipe.getDescription() != null && recipe.getDescription() !="") ?recipe.getDescription():existRecipe.get().getDescription());
             Date createdDate = existRecipe.get().getCreatedAt();
             Date updatedDate = new Date();
             updatedRecipe.setId(id);
             updatedRecipe.setMenu(menu);
             updatedRecipe.setUpdatedAt(updatedDate);
-            updatedRecipe.setImageData(imageData);
+
             updatedRecipe.setVeg(veg);
             updatedRecipe.setCreatedAt(createdDate);
             updatedRecipe.setHalfPrice(halfPrice);
