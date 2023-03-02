@@ -83,6 +83,20 @@ public class OrderDetailsController {
     }
 
 
+    @DeleteMapping("/delete-item-present-in-order")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Response deleteItemPresentInOrder(@RequestParam Long orderDetailId)
+    {
+
+    Boolean delete = orderDetailsService.deleteItemPresentInCart(orderDetailId);
+        Response response = new Response();
+        response.setBody(delete);
+        response.setStatusCode(200);
+        response.setMessage(" This item is deleted from order ");
+        return response;
+    }
+
+
 
 
 }

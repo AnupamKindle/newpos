@@ -163,5 +163,20 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
         return orderDetailsList;
     }
 
+    @Override
+    public Boolean deleteItemPresentInCart(Long orderDetailsId) {
+
+        Optional<OrderDetails> orderDetails=orderDetailsRepository.findById(orderDetailsId);
+        if(!orderDetails.isPresent())
+        {
+            throw new RuntimeException(" Id not found ");
+        }
+        else {
+          orderDetailsRepository.delete(orderDetails.get());
+            Boolean response=true;
+            return response;
+        }
+    }
+
 
 }

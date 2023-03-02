@@ -19,4 +19,7 @@ public interface OrderDetailsService {
     List<OrderDetails> allEntryAccordingToOrderId(Long orderId);
 
 
+    Boolean deleteItemPresentInCart(Long orderDetailsId);
+
+
 }
