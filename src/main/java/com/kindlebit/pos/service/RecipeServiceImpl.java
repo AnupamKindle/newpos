@@ -63,10 +63,12 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<RecipeDTO> recipesByMenu(Long menuId) throws Exception {
+    public List<RecipeDTO> recipesByMenu(Long menuId,String search) throws Exception {
         if (menuId == 0 && menuId == null) {
             throw new RuntimeException(" Invalid Menu Id ");
-        } else {
+        }
+        if(menuId !=0 && search==null)
+        {
             List<Recipe> recipeList = recipeRepository.findAllByMenuId(menuId);
 
 
@@ -95,6 +97,39 @@ public class RecipeServiceImpl implements RecipeService {
 
             return recipeDTOS;
         }
+
+        if(menuId !=0 && search!=null)
+        {
+            List<Recipe> recipeList = recipeRepository.searchRecipeByLikeName(search,menuId);
+
+
+
+            List<RecipeDTO> recipeDTOS=new ArrayList<RecipeDTO>();
+            for(Recipe recipe: recipeList)
+            {
+                RecipeDTO recipeDTO=new RecipeDTO();
+                recipeDTO.setDescription(recipe.getDescription());
+                recipeDTO.setMenu(recipe.getMenu());
+                recipeDTO.setCreatedAt(recipe.getCreatedAt());
+                recipeDTO.setId(recipe.getId());
+                recipeDTO.setName(recipe.getName());
+                recipeDTO.setFullPrice(recipe.getFullPrice());
+                recipeDTO.setHalfPrice(recipe.getHalfPrice());
+                recipeDTO.setImageData(recipe.getImageData());
+                recipeDTO.setUpdatedAt(recipe.getUpdatedAt());
+                recipeDTO.setVeg(recipe.getVeg());
+                recipeDTO.setFullQuantity(0);
+                recipeDTO.setHalfQuantity(0);
+
+
+
+                recipeDTOS.add(recipeDTO);
+            }
+
+            return recipeDTOS;
+        }
+
+        return null;
     }
 
     @Override

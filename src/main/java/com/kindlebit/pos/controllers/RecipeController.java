@@ -47,9 +47,9 @@ public class RecipeController {
 
     @GetMapping("/recipes-by-menu")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public Response RecipesByMenu(@RequestParam Long menuId) throws Exception {
+    public Response RecipesByMenu(@RequestParam Long menuId,@RequestParam(value ="search", required=false) String search) throws Exception {
 
-        List<RecipeDTO> recipeDTOS=recipeService.recipesByMenu(menuId);
+        List<RecipeDTO> recipeDTOS=recipeService.recipesByMenu(menuId,search);
 
         Response response = new Response();
         response.setBody(recipeDTOS);

@@ -11,7 +11,7 @@ public interface RecipeService {
 
     Recipe newRecipe(MultipartFile file,Recipe recipe,Long menuId) throws IOException;
 
-    List<RecipeDTO> recipesByMenu(Long menuId) throws Exception;
+    List<RecipeDTO> recipesByMenu(Long menuId,String search) throws Exception;
 
     Recipe recipe(Long recipeId) throws Exception;
 
