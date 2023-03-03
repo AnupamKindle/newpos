@@ -194,9 +194,10 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<Recipe> searchRecipeByName(String recipeName) {
+    public List<Recipe> searchRecipeByName(String recipeName,Long menuId) {
 
-        List<Recipe> recipe= recipeRepository.searchRecipeByLikeName(recipeName);
+        //Long menuId=114l;
+        List<Recipe> recipe= recipeRepository.searchRecipeByLikeName(recipeName,menuId);
 
         if(recipe==null)
         {

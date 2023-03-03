@@ -139,9 +139,9 @@ public class RecipeController {
 
     @GetMapping("/search-recipe")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public Response searchRecipe(@RequestParam String recipeName) throws Exception {
+    public Response searchRecipe(@RequestParam String recipeName,@RequestParam Long menuId) throws Exception {
 
-        List<Recipe> recipeResponse = recipeService.searchRecipeByName(recipeName);
+        List<Recipe> recipeResponse = recipeService.searchRecipeByName(recipeName,menuId);
         Response response = new Response();
         response.setBody(recipeResponse);
         response.setStatusCode(200);

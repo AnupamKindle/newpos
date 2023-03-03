@@ -20,5 +20,5 @@ public interface RecipeService {
 
     List<Recipe> allVegRecipeByMenuId(Long menuId);
 
-    List<Recipe> searchRecipeByName(String recipeName);
+    List<Recipe> searchRecipeByName(String recipeName,Long menuId);
 }
