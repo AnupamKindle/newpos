@@ -37,10 +37,10 @@ public Response newItem(@RequestBody Pantry pantry) {
 
 @GetMapping("/fetch-item")
 @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public  Response fetchItem(@RequestParam String name,@RequestParam Integer quantity)
+    public  Response fetchItem(@RequestParam Long pantryId,@RequestParam Integer quantity)
 {
 
-    Pantry pantryBody=pantryService.fetchItem(name,quantity);
+    Pantry pantryBody=pantryService.fetchItem(pantryId,quantity);
     Response response = new Response();
     response.setBody(pantryBody);
     response.setStatusCode(200);

@@ -90,8 +90,8 @@ public class PantryServiceImpl implements PantryService{
     }
 
     @Override
-    public Pantry fetchItem(String itemName, Integer quantity) {
-        Optional<Pantry> pantry=pantryRepository.findByItemName(itemName);
+    public Pantry fetchItem(Long pantryId, Integer quantity) {
+        Optional<Pantry> pantry=pantryRepository.findById(pantryId);
 
         Pantry updateQuantity=new Pantry();
 
@@ -107,6 +107,7 @@ public class PantryServiceImpl implements PantryService{
         updateQuantity.setQuantity(newQuantity);
         updateQuantity.setItemName(pantry.get().getItemName().toLowerCase(Locale.ROOT));
         updateQuantity.setCreatedAt(pantry.get().getCreatedAt());
+        updateQuantity.setUpdatedAt(new Date());
         pantryRepository.save(updateQuantity);
         return updateQuantity;
     }

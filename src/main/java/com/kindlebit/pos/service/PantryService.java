@@ -15,7 +15,7 @@ public interface PantryService {
 
     List<Pantry> getAllItems();
 
-    Pantry fetchItem(String itemName,Integer quantity);
+    Pantry fetchItem(Long pantryId,Integer quantity);
 
     Integer toKnowQuantity(String itemName);
 
