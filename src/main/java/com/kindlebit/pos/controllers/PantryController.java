@@ -117,10 +117,10 @@ e.printStackTrace();
 
     @GetMapping("/all-items")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public  Response allItems()
+    public  Response allItems(@RequestParam(value ="search", required=false) String search)
     {
 
-        List<Pantry> pantryList=pantryService.listOfAllItems();
+        List<Pantry> pantryList=pantryService.listOfAllItems(search);
         Response response = new Response();
         response.setBody(pantryList);
         response.setStatusCode(200);

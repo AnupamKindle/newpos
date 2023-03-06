@@ -18,4 +18,8 @@ public interface PantryRepository extends JpaRepository<Pantry,Long> {
     @Query(value = "SELECT p FROM Pantry p WHERE p.quantity<=8")
     List<Pantry> getAllLowQuantity();
 
+
+    @Query(value = "SELECT p FROM Pantry p WHERE p.itemName like %?1% ")
+    List<Pantry> searchByName(String search);
+
 }

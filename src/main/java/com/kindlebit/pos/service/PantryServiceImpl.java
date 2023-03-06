@@ -138,12 +138,21 @@ public class PantryServiceImpl implements PantryService{
     }
 
     @Override
-    public List<Pantry> listOfAllItems() {
+    public List<Pantry> listOfAllItems(String search) {
+        if (search == null) {
+            List<Pantry> pantryList = pantryRepository.findAll();
 
-        List<Pantry> pantryList=pantryRepository.findAll();
+            return pantryList;
+        } else if (search != null) {
+            List<Pantry> pantryList = pantryRepository.searchByName(search);
 
-        return  pantryList;
+            return pantryList;
+        }
+        return null;
     }
+
+
+
 
 
 }

@@ -21,5 +21,5 @@ public interface PantryService {
 
     List<QuantityDTO> lessQuantityInPantry();
 
-    List<Pantry> listOfAllItems();
+    List<Pantry> listOfAllItems(String search);
 }
