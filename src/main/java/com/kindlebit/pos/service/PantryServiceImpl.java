@@ -137,6 +137,13 @@ public class PantryServiceImpl implements PantryService{
         return quantityDTOS;
     }
 
+    @Override
+    public List<Pantry> listOfAllItems() {
+
+        List<Pantry> pantryList=pantryRepository.findAll();
+
+        return  pantryList;
+    }
 
 
 }

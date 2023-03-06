@@ -115,6 +115,20 @@ e.printStackTrace();
 
 
 
+    @GetMapping("/all-items")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public  Response allItems()
+    {
+
+        List<Pantry> pantryList=pantryService.listOfAllItems();
+        Response response = new Response();
+        response.setBody(pantryList);
+        response.setStatusCode(200);
+        response.setMessage(" List of all items in pantry");
+        return response;
+
+    }
+
 
 
 }

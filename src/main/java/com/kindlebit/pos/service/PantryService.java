@@ -20,4 +20,6 @@ public interface PantryService {
     Integer toKnowQuantity(String itemName);
 
     List<QuantityDTO> lessQuantityInPantry();
+
+    List<Pantry> listOfAllItems();
 }
