@@ -49,9 +49,9 @@ public class RecipeServiceImpl implements RecipeService {
             }
 
             recipeDb.setMenu(menu.get());
-            recipeDb.setName(recipe.getName());
+            recipeDb.setName(recipe.getName().toLowerCase());
             recipeDb.setVeg(recipe.getVeg());
-            recipeDb.setDescription(recipe.getDescription());
+            recipeDb.setDescription(recipe.getDescription().toLowerCase());
             recipeDb.setFullPrice(recipe.getFullPrice());
             recipeDb.setHalfPrice(recipe.getHalfPrice());
             recipeDb.setCreatedAt(new Date());
@@ -108,11 +108,11 @@ public class RecipeServiceImpl implements RecipeService {
             for(Recipe recipe: recipeList)
             {
                 RecipeDTO recipeDTO=new RecipeDTO();
-                recipeDTO.setDescription(recipe.getDescription());
+                recipeDTO.setDescription(recipe.getDescription().toLowerCase());
                 recipeDTO.setMenu(recipe.getMenu());
                 recipeDTO.setCreatedAt(recipe.getCreatedAt());
                 recipeDTO.setId(recipe.getId());
-                recipeDTO.setName(recipe.getName());
+                recipeDTO.setName(recipe.getName().toLowerCase());
                 recipeDTO.setFullPrice(recipe.getFullPrice());
                 recipeDTO.setHalfPrice(recipe.getHalfPrice());
                 recipeDTO.setImageData(recipe.getImageData());
@@ -212,8 +212,8 @@ public class RecipeServiceImpl implements RecipeService {
             updatedRecipe.setCreatedAt(createdDate);
             updatedRecipe.setHalfPrice(halfPrice);
             updatedRecipe.setFullPrice(fullPrice);
-            updatedRecipe.setName(name);
-            updatedRecipe.setDescription(description);
+            updatedRecipe.setName(name.toLowerCase());
+            updatedRecipe.setDescription(description.toLowerCase());
             Recipe recipeResponse = recipeRepository.save(updatedRecipe);
             return recipeResponse;
         }

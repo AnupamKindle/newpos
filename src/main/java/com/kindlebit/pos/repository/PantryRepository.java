@@ -15,7 +15,7 @@ public interface PantryRepository extends JpaRepository<Pantry,Long> {
     Optional<Pantry> findByItemName(String itemName);
 
 
-    @Query(value = "SELECT p FROM Pantry p WHERE p.quantity<=8")
+    @Query(value = "SELECT p FROM Pantry p WHERE p.quantity<=p.minimumQuantity")
     List<Pantry> getAllLowQuantity();
 
 

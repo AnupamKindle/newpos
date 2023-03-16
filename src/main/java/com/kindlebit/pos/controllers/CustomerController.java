@@ -3,7 +3,9 @@ package com.kindlebit.pos.controllers;
 
 import com.kindlebit.pos.models.Customer;
 
+import com.kindlebit.pos.models.Orders;
 import com.kindlebit.pos.service.CustomerService;
+import com.kindlebit.pos.service.OrderService;
 import com.kindlebit.pos.utill.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +20,9 @@ public class CustomerController {
 
     @Autowired
     CustomerService customerService;
+
+    @Autowired
+    OrderService orderService;
 
     @PostMapping("/create-customer")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
@@ -65,6 +70,22 @@ public class CustomerController {
         response.setBody(deleteCustomer);
         return response;
     }
+
+
+    @PostMapping("/create-customer-and-place-order")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public Response createCustomerAndPlaceOrder(@RequestBody Customer customer,@RequestParam(value ="tableName", required=false) String tableName,
+                                                @RequestParam String orderType) {
+      //  Customer customerResponse = customerService.createCustomer(customer);
+
+        Orders ordersResponse = orderService.createCustomerAndPlaceOrder(customer,tableName,orderType);
+        Response response = new Response();
+        response.setBody(ordersResponse);
+        response.setStatusCode(200);
+        response.setMessage(" order has been placed ");
+        return response;
+    }
+
 
 
 }

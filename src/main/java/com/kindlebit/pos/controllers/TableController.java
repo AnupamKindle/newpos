@@ -96,5 +96,33 @@ public class TableController {
     }
 
 
+    @GetMapping("/free-tables")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public Response freeTableList()
+    {
+
+        List<TableTop> tableTops=tableService.freeTablesList();
+        Response response=new Response();
+        response.setMessage("list of all free tables");
+        response.setStatusCode(200);
+        response.setBody(tableTops);
+        return response;
+    }
+
+
+
+    @GetMapping("/table-list-according-to-type")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public Response tableListAccordingToType(@RequestParam String type)
+    {
+
+        List<TableTop> tableTops=tableService.tableAccordingToType(type);
+        Response response=new Response();
+        response.setMessage(" list of tables according to "+type);
+        response.setStatusCode(200);
+        response.setBody(tableTops);
+        return response;
+    }
+
 
 }

@@ -88,7 +88,8 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
         orderRepository.save(orders.get());
         String tableName = orders.get().getTableName();
 
-        if(!(tableName.equals("NA"))) {
+        //System.out.println("=========================================>>>"+tableName);
+        if( (!(tableName.equals("NA"))) || (!(tableName.equals("na"))) ){
             Optional<TableTop> tableTop = tableRepository.findByTableName(tableName);
             tableTop.get().setStatus("free");
 
@@ -96,13 +97,13 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
         }
 
         //for now we are commenting customer ID
-        //Customer customer= customerRepository.findById(orders.get().getCustomerId()).get();
+        Customer customer= customerRepository.findById(orders.get().getCustomerId()).get();
         invoiceDTO.setInvoiceDate(new Date());
         invoiceDTO.setOrderDetails(orderDetailsList);
         invoiceDTO.setStatus("paid");
         invoiceDTO.setAmountToBePaid(amountToBePaid);
         invoiceDTO.setTableName(tableName);
-       // invoiceDTO.setCustomerName(customer.getName());
+        invoiceDTO.setCustomerName(customer.getName());
         invoiceDTO.setDiscount(discount);
 
 

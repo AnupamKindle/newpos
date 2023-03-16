@@ -23,5 +23,10 @@ public interface TableService {
     TableTop bookTable(Integer capacity, Customer customer);
 
 
+    List<TableTop> freeTablesList();
+
+    List<TableTop> tableAccordingToType(String type);
+
+
 
 }

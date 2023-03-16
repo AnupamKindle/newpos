@@ -31,12 +31,12 @@ public class OrderServiceImpl implements OrderService{
 
         // For now we are commenting this code for current requirement
 
-       /* Optional<Customer> existingCustomer= customerRepository.findById(customerId);
+        Optional<Customer> existingCustomer= customerRepository.findById(customerId);
 
         if(!existingCustomer.isPresent())
         {
             throw new RuntimeException(" Customer not found ");
-        }*/
+        }
         Orders orderDB=new Orders();
         orderDB.setOrderDate(new Date());
         orderDB.setOrderType(order.getOrderType());
@@ -100,7 +100,7 @@ public class OrderServiceImpl implements OrderService{
             editOrderDb.setOrderDate(orderDate);
             editOrderDb.setOrderType(orderType);
             editOrderDb.setStatus(status);
-            editOrderDb.setTableName(tableName);
+            editOrderDb.setTableName(tableName.toLowerCase());
             editOrderDb.setCustomerId(customerId);
             editOrderDb.setGrandTotal(grandTotal);
 
@@ -110,6 +110,157 @@ public class OrderServiceImpl implements OrderService{
         }
 
     }
+
+    // New api for create Customer and place parallelly
+
+/*
+    @Override
+    public Orders createCustomerAndPlaceOrder(Customer customer, String tableName, String orderType) {
+
+        Orders newOrders=new Orders();
+        Optional<Customer> existCustomer= customerRepository.findByPhoneNumber(customer.getPhoneNumber());
+        if(!existCustomer.isPresent())
+        {
+            customer.setCreatedAt(new Date());
+          Customer newCustomer =  customerRepository.save(customer);
+
+          Optional<TableTop> tableTop= tableRepository.findByTableName(tableName);
+
+            tableTop.get().setStatus("booked");
+            tableRepository.save(tableTop.get());
+
+
+              newOrders.setOrderType(orderType);
+              newOrders.setOrderDate(new Date());
+              newOrders.setCustomerId(newCustomer.getId());
+              newOrders.setStatus("unpaid");
+              if(orderType.equals("delivery"))
+              {
+                  newOrders.setTableName("na");
+              }
+              else {
+                  newOrders.setTableName(tableName);
+              }
+              newOrders.setGrandTotal(0d);
+
+              Orders ordersResponse = orderRepository.save(newOrders);
+
+              return ordersResponse;
+
+
+
+        }
+
+        else {
+
+                newOrders.setOrderType(orderType);
+                newOrders.setOrderDate(new Date());
+                newOrders.setCustomerId(existCustomer.get().getId());
+                newOrders.setStatus("unpaid");
+                if(orderType.equals("delivery"))
+                {
+                    newOrders.setTableName("na");
+                }
+                else {
+                    Optional<TableTop> tableTop= tableRepository.findByTableName(tableName);
+
+                    tableTop.get().setStatus("booked");
+                    tableRepository.save(tableTop.get());
+                    newOrders.setTableName(tableName);
+                }
+                newOrders.setGrandTotal(0d);
+
+                Orders ordersResponse = orderRepository.save(newOrders);
+
+                return ordersResponse;
+
+
+        }
+    }
+*/
+
+
+
+
+    @Override
+    public Orders createCustomerAndPlaceOrder(Customer customer, String tableName, String orderType) {
+
+        Orders newOrders=new Orders();
+        Optional<Customer> existCustomer= customerRepository.findByPhoneNumber(customer.getPhoneNumber());
+        if(!existCustomer.isPresent())
+        {
+            customer.setCreatedAt(new Date());
+            Customer newCustomer =  customerRepository.save(customer);
+
+
+
+
+            newOrders.setOrderType(orderType);
+            newOrders.setOrderDate(new Date());
+            newOrders.setCustomerId(newCustomer.getId());
+            newOrders.setStatus("unpaid");
+            if(orderType.equals("delivery"))
+            {
+                newOrders.setTableName("na");
+            }
+            else if(orderType.equals("booked")) {
+                Optional<TableTop> tableTop= tableRepository.findByTableName(tableName);
+
+                tableTop.get().setStatus("booked");
+                tableRepository.save(tableTop.get());
+                newOrders.setTableName(tableName);
+            }
+            else if(orderType.equals("dine in")) {
+                Optional<TableTop> tableTop= tableRepository.findByTableName(tableName);
+
+                tableTop.get().setStatus("active");
+                tableRepository.save(tableTop.get());
+                newOrders.setTableName(tableName);
+            }
+            newOrders.setGrandTotal(0d);
+
+            Orders ordersResponse = orderRepository.save(newOrders);
+
+            return ordersResponse;
+
+
+
+        }
+
+        else {
+
+            newOrders.setOrderType(orderType);
+            newOrders.setOrderDate(new Date());
+            newOrders.setCustomerId(existCustomer.get().getId());
+            newOrders.setStatus("unpaid");
+            if(orderType.equals("delivery"))
+            {
+                newOrders.setTableName("na");
+            }
+            else if(orderType.equals("booked"))  {
+                Optional<TableTop> tableTop= tableRepository.findByTableName(tableName);
+
+                tableTop.get().setStatus("booked");
+                tableRepository.save(tableTop.get());
+                newOrders.setTableName(tableName);
+            }
+            else if(orderType.equals("dine in")) {
+                Optional<TableTop> tableTop= tableRepository.findByTableName(tableName);
+
+                tableTop.get().setStatus("active");
+                tableRepository.save(tableTop.get());
+                newOrders.setTableName(tableName);
+            }
+            newOrders.setGrandTotal(0d);
+
+            Orders ordersResponse = orderRepository.save(newOrders);
+
+            return ordersResponse;
+
+
+        }
+    }
+
 
 
 }

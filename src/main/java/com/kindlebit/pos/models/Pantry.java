@@ -23,8 +23,20 @@ public class Pantry{
     private int quantity;
 
 
+    public int getMinimumQuantity() {
+        return minimumQuantity;
+    }
+
+    public void setMinimumQuantity(int minimumQuantity) {
+        this.minimumQuantity = minimumQuantity;
+    }
+
     @Column(name = "rack_location")
     private String rackLocation;
+
+
+    @Column(name = "minimum_quantity")
+    private int minimumQuantity;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)

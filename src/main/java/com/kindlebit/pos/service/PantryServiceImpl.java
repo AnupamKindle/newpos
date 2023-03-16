@@ -32,6 +32,7 @@ public class PantryServiceImpl implements PantryService{
         pantryDb.setItemName(pantry.getItemName().toLowerCase());
         pantryDb.setQuantity(pantry.getQuantity());
         pantryDb.setRackLocation(pantry.getRackLocation());
+        pantryDb.setMinimumQuantity(pantry.getMinimumQuantity());
         Pantry pantryResponse =   pantryRepository.save(pantryDb);
         return pantryResponse;
     }
@@ -70,6 +71,8 @@ public class PantryServiceImpl implements PantryService{
             String itemName =(pantry.getItemName()!= null && pantry.getItemName()!=" "? pantry.getItemName():existingItem.get().getItemName());
 
 
+            int minimumQuantity= (pantry.getMinimumQuantity()!=0?pantry.getMinimumQuantity():existingItem.get().getMinimumQuantity());
+
             updatedPantry.setId(id);
             updatedPantry.setItemName(itemName);
             updatedPantry.setUpdatedAt(updatedDate);
@@ -98,6 +101,7 @@ public class PantryServiceImpl implements PantryService{
         updateQuantity.setId(pantry.get().getId());
         updateQuantity.setUpdatedAt(new Date());
         updateQuantity.setRackLocation(pantry.get().getRackLocation());
+        updateQuantity.setMinimumQuantity(pantry.get().getMinimumQuantity());
         Integer newQuantity=pantry.get().getQuantity()-quantity;
 
         if(newQuantity<0)

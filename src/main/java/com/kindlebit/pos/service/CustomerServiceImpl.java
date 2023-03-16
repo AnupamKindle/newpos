@@ -56,6 +56,13 @@ public class CustomerServiceImpl implements CustomerService {
 
             Long id = existCustomer.get().getId();
             String phoneNumber = ( customer.getPhoneNumber() !=" " ? customer.getPhoneNumber():existCustomer.get().getPhoneNumber() ) ;
+
+            Optional<Customer> customerPhone= customerRepository.findByPhoneNumber(phoneNumber);
+            if(customerPhone.isPresent())
+            {
+                throw new RuntimeException(" This number is already saved in DB ");
+            }
+
             String name = ( customer.getName() !=" "?customer.getName():existCustomer.get().getName() );
             Date createdDate= existCustomer.get().getCreatedAt();
             Date updatedDate = new Date();

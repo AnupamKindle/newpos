@@ -37,7 +37,14 @@ public class TableServiceImpl implements TableService {
                 throw new RuntimeException("This table name is already in Data Base.");
             }
 
-            TableTop tableTopResponse = tableRepository.save(tableTop);
+            TableTop tableTop2= new TableTop();
+            tableTop2.setStatus("free");
+            tableTop2.setTableName(tableTop.getTableName().toLowerCase());
+            tableTop2.setCreatedAt(new Date());
+            tableTop2.setType(tableTop.getType());
+            tableTop2.setCapacity(tableTop.getCapacity());
+
+            TableTop tableTopResponse = tableRepository.save(tableTop2);
             Response response = new Response();
 
             response.setMessage("Table has been saved");
@@ -76,12 +83,12 @@ public class TableServiceImpl implements TableService {
             Date createdAt = existTable.get().getCreatedAt();
 
             editTable.setId(id);
-            editTable.setTableName(name);
-            editTable.setType(type);
+            editTable.setTableName(name.toLowerCase());
+            editTable.setType(type.toLowerCase());
             editTable.setCapacity(capacity);
             editTable.setCreatedAt(createdAt);
             editTable.setUpdatedAt(updateDate);
-            editTable.setStatus(status);
+            editTable.setStatus(status.toLowerCase());
 
             tableRepository.save(editTable);
         }
@@ -152,7 +159,18 @@ public class TableServiceImpl implements TableService {
         return freeTable;
     }
 
+    @Override
+    public List<TableTop> freeTablesList() {
 
-    // Adding comment to merge in master
+        List<TableTop> tableTops = tableRepository.findAllFreeTable();
+        return tableTops;
+    }
+
+    @Override
+    public List<TableTop> tableAccordingToType(String type) {
+        List<TableTop> tableTopList=tableRepository.ListOfTablesAccordingToType(type);
+        return tableTopList;
+    }
+
 
 }
