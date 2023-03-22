@@ -2,20 +2,21 @@ package com.kindlebit.pos.service;
 
 import com.kindlebit.pos.dto.QuantityDTO;
 import com.kindlebit.pos.models.Pantry;
+import com.kindlebit.pos.utill.Response;
 
 import java.util.List;
 
 public interface PantryService {
 
-    Pantry storeNewItem(Pantry pantry);
+    Response storeNewItem(Pantry pantry);
 
     boolean deleteItem(Long itemId);
 
-    Pantry updateItem(Long itemId,Pantry pantry);
+    Response updateItem(Long itemId,Pantry pantry);
 
     List<Pantry> getAllItems();
 
-    Pantry fetchItem(Long pantryId,Integer quantity);
+    Response fetchItem(Long pantryId,Integer quantity);
 
     Integer toKnowQuantity(String itemName);
 

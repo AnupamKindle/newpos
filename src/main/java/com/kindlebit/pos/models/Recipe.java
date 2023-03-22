@@ -40,6 +40,9 @@ public class Recipe {
     @Column(name = "full_price")
     private Integer fullPrice;
 
+    @Column(name = "quater_price")
+    private Integer quaterPrice;
+
 
     @Column(name = "description")
     private String description;
@@ -130,5 +133,14 @@ public class Recipe {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+
+    public Integer getQuaterPrice() {
+        return quaterPrice;
+    }
+
+    public void setQuaterPrice(Integer quaterPrice) {
+        this.quaterPrice = quaterPrice;
     }
 }

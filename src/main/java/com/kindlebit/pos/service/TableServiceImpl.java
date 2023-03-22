@@ -9,6 +9,7 @@ import com.kindlebit.pos.repository.CustomerRepository;
 import com.kindlebit.pos.repository.TableRepository;
 import com.kindlebit.pos.utill.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -65,16 +66,37 @@ public class TableServiceImpl implements TableService {
     }
 
     @Override
-    public TableTop editTable(String tableName, TableTop tableTop) {
+    public Response editTable(String tableName, TableTop tableTop) {
+
+        Response response=new Response();
+
+        ResponseEntity<?> responseEntity ;
         Optional<TableTop> existTable = tableRepository.findByTableName(tableName);
         TableTop editTable = new TableTop();
         if (!existTable.isPresent()) {
 
-            throw new RuntimeException(" Table not found ");
+            response.setMessage("Table not found");
+            response.setBody(null);
+            response.setStatusCode(404);
+
+            return response;
         } else {
 
             Long id = existTable.get().getId();
             String name = (tableTop.getTableName() != " " ? tableTop.getTableName() : existTable.get().getTableName());
+
+            Optional<TableTop> presentTable= tableRepository.findByTableName(name);
+
+            if(presentTable.get().getId() != id)
+            {
+                response.setMessage(" This name is already reserved  ");
+                response.setBody(null);
+                response.setStatusCode(400);
+                return response;
+
+            }
+
+
             Integer capacity = (tableTop.getCapacity() != 0 ? tableTop.getCapacity() : existTable.get().getCapacity());
             String status = (tableTop.getStatus() != null ? tableTop.getStatus() : existTable.get().getStatus());
 
@@ -91,8 +113,14 @@ public class TableServiceImpl implements TableService {
             editTable.setStatus(status.toLowerCase());
 
             tableRepository.save(editTable);
+
+            response.setMessage(" Table has been updated !!  ");
+            response.setBody(editTable);
+            response.setStatusCode(200);
+            return response;
         }
-        return editTable;
+
+      //  return editTable;
     }
 
     @Override
@@ -170,6 +198,13 @@ public class TableServiceImpl implements TableService {
     public List<TableTop> tableAccordingToType(String type) {
         List<TableTop> tableTopList=tableRepository.ListOfTablesAccordingToType(type);
         return tableTopList;
+    }
+
+    @Override
+    public List<TableTop> freeAndBookedTableList() {
+
+        List<TableTop> tableTops = tableRepository.findAllFreeTableAndBookedTable();
+        return tableTops;
     }
 
 

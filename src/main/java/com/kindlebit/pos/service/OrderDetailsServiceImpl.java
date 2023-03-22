@@ -45,9 +45,11 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
         Recipe recipe = recipeRepository.findByName(recipeName.toLowerCase());
         Integer halfPrice = recipe.getHalfPrice();
         Integer fullPrice = recipe.getFullPrice();
+        Integer quaterPrice= recipe.getQuaterPrice();
         Integer halfQuantity = orderDetails.getHalfQuantity();
         Integer fullQuantity = orderDetails.getFullQuantity();
-        Integer totalAmount = (halfPrice * halfQuantity)+(fullPrice * fullQuantity );
+        Integer quaterQuantity= orderDetails.getQuaterQuantity();
+        Integer totalAmount = (halfPrice * halfQuantity)+(fullPrice * fullQuantity )+(quaterPrice * quaterQuantity);
 
         Optional<OrderDetails> orderDetailsExistOb=orderDetailsRepository.findByRecipeName(recipeName.toLowerCase(),orderId);
         if(orderDetailsExistOb.isPresent())
@@ -56,6 +58,7 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
         }
         orderDetailsDB.setFullQuantity(orderDetails.getFullQuantity());
         orderDetailsDB.setHalfQuantity(orderDetails.getHalfQuantity());
+        orderDetailsDB.setQuaterQuantity(orderDetails.getQuaterQuantity());
         orderDetailsDB.setOrderId(orders.get().getId());
         orderDetailsDB.setTotalAmount(totalAmount);
         orderDetailsDB.setRecipeName(recipeName.toLowerCase());
@@ -89,7 +92,7 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
         String tableName = orders.get().getTableName();
 
         //System.out.println("=========================================>>>"+tableName);
-        if( (!(tableName.equals("NA"))) || (!(tableName.equals("na"))) ){
+        if( !(tableName.equals("na")) ){
             Optional<TableTop> tableTop = tableRepository.findByTableName(tableName);
             tableTop.get().setStatus("free");
 
@@ -134,6 +137,9 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
 
             Integer fullQuantity =(orderDetails.getFullQuantity() !=0 ? orderDetails.getFullQuantity():orderDetailsExist.get().getFullQuantity());
 
+            Integer quaterQuantity =(orderDetails.getQuaterQuantity() !=0 ? orderDetails.getQuaterQuantity():orderDetailsExist.get().getQuaterQuantity());
+
+
             if(halfQuantity !=0 && fullQuantity!=0)
             {
                  totalAmount =(halfQuantity* existRecipe.getHalfPrice()+fullQuantity*existRecipe.getFullPrice());
@@ -144,6 +150,7 @@ public class OrderDetailsServiceImpl implements  OrderDetailsService{
             editOrderDetails.setRecipeName(recipeName);
             editOrderDetails.setHalfQuantity(halfQuantity);
             editOrderDetails.setFullQuantity(fullQuantity);
+            editOrderDetails.setQuaterQuantity(quaterQuantity);
             editOrderDetails.setTotalAmount(totalAmount);
             editOrderDetails.setOrderId(orderId);
 

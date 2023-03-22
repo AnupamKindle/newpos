@@ -12,6 +12,8 @@ import java.util.Optional;
 
 public interface PantryRepository extends JpaRepository<Pantry,Long> {
 
+
+
     Optional<Pantry> findByItemName(String itemName);
 
 

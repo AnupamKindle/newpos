@@ -24,6 +24,10 @@ public class OrderDetails {
     @Column(name ="full_quantity")
     private Integer fullQuantity;
 
+    @Column(name ="quater_quantity")
+    private Integer quaterQuantity;
+
+
     @Column(name ="total_amount")
     private Integer totalAmount;
 
@@ -65,6 +69,14 @@ public class OrderDetails {
 
     public void setFullQuantity(Integer fullQuantity) {
         this.fullQuantity = fullQuantity;
+    }
+
+    public Integer getQuaterQuantity() {
+        return quaterQuantity;
+    }
+
+    public void setQuaterQuantity(Integer quaterQuantity) {
+        this.quaterQuantity = quaterQuantity;
     }
 
     public Integer getTotalAmount() {

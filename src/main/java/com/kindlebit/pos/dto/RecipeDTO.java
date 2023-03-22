@@ -14,9 +14,19 @@ public class RecipeDTO {
 
     private Boolean veg;
 
+    public Integer getQuaterPrice() {
+        return quaterPrice;
+    }
+
+    public void setQuaterPrice(Integer quaterPrice) {
+        this.quaterPrice = quaterPrice;
+    }
+
     private Integer halfPrice;
 
     private Integer fullPrice;
+
+    private Integer quaterPrice;
 
     private String description;
 
@@ -45,6 +55,8 @@ public class RecipeDTO {
     private  Integer fullQuantity;
 
     private  Integer halfQuantity;
+
+    private  Integer quaterQuantity;
 
     public Long getId() {
         return id;
@@ -127,4 +139,11 @@ public class RecipeDTO {
     }
 
 
+    public Integer getQuaterQuantity() {
+        return quaterQuantity;
+    }
+
+    public void setQuaterQuantity(Integer quaterQuantity) {
+        this.quaterQuantity = quaterQuantity;
+    }
 }

@@ -186,6 +186,8 @@ public class OrderServiceImpl implements OrderService{
     public Orders createCustomerAndPlaceOrder(Customer customer, String tableName, String orderType) {
 
         Orders newOrders=new Orders();
+
+        Orders ordersResponse=new Orders();
         Optional<Customer> existCustomer= customerRepository.findByPhoneNumber(customer.getPhoneNumber());
         if(!existCustomer.isPresent())
         {
@@ -219,7 +221,7 @@ public class OrderServiceImpl implements OrderService{
             }
             newOrders.setGrandTotal(0d);
 
-            Orders ordersResponse = orderRepository.save(newOrders);
+             ordersResponse = orderRepository.save(newOrders);
 
             return ordersResponse;
 
@@ -253,7 +255,7 @@ public class OrderServiceImpl implements OrderService{
             }
             newOrders.setGrandTotal(0d);
 
-            Orders ordersResponse = orderRepository.save(newOrders);
+             ordersResponse = orderRepository.save(newOrders);
 
             return ordersResponse;
 

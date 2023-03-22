@@ -1,6 +1,7 @@
 package com.kindlebit.pos.service;
 
 import com.kindlebit.pos.models.Customer;
+import com.kindlebit.pos.utill.Response;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface CustomerService {
 
     List<Customer> customerList();
 
-    Customer editCustomer(Long customerId,Customer customer);
+    Response editCustomer(Long customerId, Customer customer);
 
     Boolean deleteCustomer(Long customerId);
 }

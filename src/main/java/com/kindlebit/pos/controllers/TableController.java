@@ -6,6 +6,7 @@ import com.kindlebit.pos.models.TableTop;
 import com.kindlebit.pos.service.TableService;
 import com.kindlebit.pos.utill.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
@@ -51,16 +52,15 @@ public class TableController {
 
     @PutMapping("/edit-table/{tableName}")
     @PreAuthorize("hasRole('ADMIN')")
-    public Response editTable(@PathVariable(value = "tableName") String tableName , @RequestBody TableTop tableTop )
+    public ResponseEntity<?> editTable(@PathVariable(value = "tableName") String tableName , @RequestBody TableTop tableTop )
     {
 
-        TableTop tableTops=tableService.editTable(tableName,tableTop);
+        Response tableResponse=tableService.editTable(tableName,tableTop);
 
-        Response response=new Response();
-        response.setMessage(" Table has been updated . ");
-        response.setStatusCode(200);
-        response.setBody(tableTops);
-        return response;
+        return ResponseEntity
+                .status(tableResponse.getStatusCode())
+                .body(tableResponse);
+
 
     }
 
@@ -123,6 +123,23 @@ public class TableController {
         response.setBody(tableTops);
         return response;
     }
+
+
+    @GetMapping("/list-of-free-and-booked-tables")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public Response freeAndBookedTableList()
+    {
+
+        List<TableTop> tableTops=tableService.freeAndBookedTableList();
+        Response response=new Response();
+        response.setMessage("list of all free and booked tables");
+        response.setStatusCode(200);
+        response.setBody(tableTops);
+        return response;
+    }
+
+
+
 
 
 }

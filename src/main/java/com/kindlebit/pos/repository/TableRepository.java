@@ -20,4 +20,8 @@ public interface TableRepository extends JpaRepository<TableTop,Long> {
     List<TableTop> ListOfTablesAccordingToType(String type);
 
 
+    @Query( value = "SELECT t FROM TableTop t WHERE t.status like '%free%'  OR t.status like '%booked%' ")
+    List<TableTop> findAllFreeTableAndBookedTable();
+
+
 }

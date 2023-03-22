@@ -16,7 +16,7 @@ public interface TableService {
 
     List<TableTop> tablesList();
 
-    TableTop editTable(String tableName, TableTop tableTop);
+    Response editTable(String tableName, TableTop tableTop);
 
     Boolean deleteTable(String tableName);
 
@@ -26,6 +26,9 @@ public interface TableService {
     List<TableTop> freeTablesList();
 
     List<TableTop> tableAccordingToType(String type);
+
+
+    List<TableTop> freeAndBookedTableList();
 
 
 

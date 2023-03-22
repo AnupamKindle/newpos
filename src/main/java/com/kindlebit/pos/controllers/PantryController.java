@@ -7,6 +7,7 @@ import com.kindlebit.pos.models.TableTop;
 import com.kindlebit.pos.service.PantryService;
 import com.kindlebit.pos.utill.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,25 +28,19 @@ public class PantryController {
 @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 public Response newItem(@RequestBody Pantry pantry) {
 
-    Pantry pantryBody=pantryService.storeNewItem(pantry);
-    Response response = new Response();
-    response.setBody(pantryBody);
-    response.setStatusCode(200);
-    response.setMessage(" A new Item has been added to pantry ");
+    Response response=pantryService.storeNewItem(pantry);
     return response;
 }
 
 @GetMapping("/fetch-item")
 @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public  Response fetchItem(@RequestParam Long pantryId,@RequestParam Integer quantity)
+    public  ResponseEntity<?> fetchItem(@RequestParam Long pantryId,@RequestParam Integer quantity)
 {
+    Response response=pantryService.fetchItem(pantryId,quantity);
 
-    Pantry pantryBody=pantryService.fetchItem(pantryId,quantity);
-    Response response = new Response();
-    response.setBody(pantryBody);
-    response.setStatusCode(200);
-    response.setMessage(" Item has been updated");
-    return response;
+    return ResponseEntity
+            .status(response.getStatusCode())
+            .body(response);
 
 }
 
@@ -86,15 +81,14 @@ e.printStackTrace();
 
     @PutMapping("/update-item")
     @PreAuthorize("hasRole('ADMIN')")
-    public Response editItem(@RequestParam Long itemId,@RequestBody Pantry pantry)
+    public ResponseEntity<?> editItem(@RequestParam Long itemId, @RequestBody Pantry pantry)
     {
 
-        Pantry responsePantry=pantryService.updateItem(itemId,pantry);
-        Response response = new Response();
-        response.setBody(responsePantry);
-        response.setStatusCode(200);
-        response.setMessage(" Item has been updated ");
-        return response;
+        Response responsePantry=pantryService.updateItem(itemId,pantry);
+
+        return ResponseEntity
+                .status(responsePantry.getStatusCode())
+                .body(responsePantry);
 
     }
 

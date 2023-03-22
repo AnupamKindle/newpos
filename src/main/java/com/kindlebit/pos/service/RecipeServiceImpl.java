@@ -54,8 +54,17 @@ public class RecipeServiceImpl implements RecipeService {
             recipeDb.setDescription(recipe.getDescription().toLowerCase());
             recipeDb.setFullPrice(recipe.getFullPrice());
             recipeDb.setHalfPrice(recipe.getHalfPrice());
+            if(recipe.getQuaterPrice()==null)
+            {
+                recipeDb.setQuaterPrice(0);
+            }
+            else {
+                recipeDb.setQuaterPrice(recipe.getQuaterPrice());
+            }
             recipeDb.setCreatedAt(new Date());
-            recipeDb.setImageData(file.getBytes());
+            if(file !=null) {
+                recipeDb.setImageData(file.getBytes());
+            }
             recipeRepository.save(recipeDb);
 
         }
@@ -84,12 +93,13 @@ public class RecipeServiceImpl implements RecipeService {
                 recipeDTO.setName(recipe.getName());
                 recipeDTO.setFullPrice(recipe.getFullPrice());
                 recipeDTO.setHalfPrice(recipe.getHalfPrice());
+                recipeDTO.setQuaterPrice(recipe.getQuaterPrice());
                 recipeDTO.setImageData(recipe.getImageData());
                 recipeDTO.setUpdatedAt(recipe.getUpdatedAt());
                 recipeDTO.setVeg(recipe.getVeg());
                 recipeDTO.setFullQuantity(0);
                 recipeDTO.setHalfQuantity(0);
-
+                recipeDTO.setQuaterQuantity(0);
 
 
                 recipeDTOS.add(recipeDTO);
@@ -115,13 +125,13 @@ public class RecipeServiceImpl implements RecipeService {
                 recipeDTO.setName(recipe.getName().toLowerCase());
                 recipeDTO.setFullPrice(recipe.getFullPrice());
                 recipeDTO.setHalfPrice(recipe.getHalfPrice());
+                recipeDTO.setQuaterPrice(recipe.getQuaterPrice());
                 recipeDTO.setImageData(recipe.getImageData());
                 recipeDTO.setUpdatedAt(recipe.getUpdatedAt());
                 recipeDTO.setVeg(recipe.getVeg());
                 recipeDTO.setFullQuantity(0);
                 recipeDTO.setHalfQuantity(0);
-
-
+                recipeDTO.setQuaterQuantity(0);
 
                 recipeDTOS.add(recipeDTO);
             }
@@ -190,6 +200,8 @@ public class RecipeServiceImpl implements RecipeService {
             Integer halfPrice =( (recipe.getHalfPrice() !=null && recipe.getHalfPrice()!=0) ? recipe.getHalfPrice() : existRecipe.get().getHalfPrice());
             Integer fullPrice = ( (recipe.getFullPrice() !=null && recipe.getFullPrice()!=0) ? recipe.getFullPrice() : existRecipe.get().getFullPrice());
 
+            Integer  quaterPrice= ( (recipe.getQuaterPrice() !=null && recipe.getQuaterPrice()!=0) ? recipe.getQuaterPrice() : existRecipe.get().getQuaterPrice());
+
          if(recipe.getImageData()!=null) {
              byte[] imageData = recipe.getImageData() ;
 
@@ -212,6 +224,7 @@ public class RecipeServiceImpl implements RecipeService {
             updatedRecipe.setCreatedAt(createdDate);
             updatedRecipe.setHalfPrice(halfPrice);
             updatedRecipe.setFullPrice(fullPrice);
+            updatedRecipe.setQuaterPrice(quaterPrice);
             updatedRecipe.setName(name.toLowerCase());
             updatedRecipe.setDescription(description.toLowerCase());
             Recipe recipeResponse = recipeRepository.save(updatedRecipe);

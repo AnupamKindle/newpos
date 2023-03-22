@@ -28,8 +28,8 @@ public class RecipeController {
     @PostMapping("/new-recipe")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public Response newRecipe(@RequestParam String name,@RequestParam Boolean veg,@RequestParam Integer halfPrice,
-                              @RequestParam Integer fullPrice,@RequestParam String description,
-                              @RequestParam Long menuId,@RequestParam MultipartFile file) throws IOException {
+                              @RequestParam Integer fullPrice,@RequestParam(value ="quaterPrice", required=false) Integer quaterPrice  ,@RequestParam String description,
+                              @RequestParam Long menuId,@RequestParam(value ="file", required=false) MultipartFile file ) throws IOException {
 
         Recipe recipe=new Recipe();
         recipe.setName(name.toLowerCase());
@@ -37,6 +37,7 @@ public class RecipeController {
         recipe.setDescription(description);
         recipe.setFullPrice(fullPrice);
         recipe.setHalfPrice(halfPrice);
+        recipe.setQuaterPrice(quaterPrice);
         Recipe recipeResponse=recipeService.newRecipe(file,recipe,menuId);
         Response response = new Response();
         response.setBody(recipeResponse);

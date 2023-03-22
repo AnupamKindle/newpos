@@ -3,6 +3,7 @@ package com.kindlebit.pos.service;
 
 import com.kindlebit.pos.models.Customer;
 import com.kindlebit.pos.repository.CustomerRepository;
+import com.kindlebit.pos.utill.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,27 +44,42 @@ public class CustomerServiceImpl implements CustomerService {
         return customerList;}
 
     @Override
-    public Customer editCustomer(Long customerId,Customer customer) {
+    public Response editCustomer(Long customerId,Customer customer) {
+
+
+        Response response = new Response();
 
         Optional<Customer> existCustomer = customerRepository.findById(customerId);
 
         Customer editCustomer=new Customer();
         if(!existCustomer.isPresent())
         {
-            throw  new RuntimeException(" Sorry Customer not found ");
+            response.setBody(null);
+            response.setMessage("Sorry Customer not found ");
+            response.setStatusCode(404);
+          return response;
         }
         else {
 
             Long id = existCustomer.get().getId();
-            String phoneNumber = ( customer.getPhoneNumber() !=" " ? customer.getPhoneNumber():existCustomer.get().getPhoneNumber() ) ;
+            String phoneNumber = ( !(customer.getPhoneNumber() .isEmpty()) ? customer.getPhoneNumber():existCustomer.get().getPhoneNumber() ) ;
+
+
 
             Optional<Customer> customerPhone= customerRepository.findByPhoneNumber(phoneNumber);
-            if(customerPhone.isPresent())
-            {
-                throw new RuntimeException(" This number is already saved in DB ");
+            if(customerPhone.isPresent()) {
+                if (customerPhone.get().getId() != customerId) {
+                    //throw new RuntimeException(" This number is already saved in DB ");
+
+                    response.setBody(null);
+                    response.setMessage(" This number is already exist");
+                    response.setStatusCode(403);
+                    return response;
+
+                }
             }
 
-            String name = ( customer.getName() !=" "?customer.getName():existCustomer.get().getName() );
+            String name = ( customer.getName() !=""?customer.getName():existCustomer.get().getName() );
             Date createdDate= existCustomer.get().getCreatedAt();
             Date updatedDate = new Date();
             editCustomer.setId(id);
@@ -72,7 +88,11 @@ public class CustomerServiceImpl implements CustomerService {
             editCustomer.setCreatedAt(createdDate);
             editCustomer.setPhoneNumber(phoneNumber);
             customerRepository.save(editCustomer);
-        return  editCustomer;
+
+            response.setBody(editCustomer);
+            response.setMessage(" Customer has been updated  ");
+            response.setStatusCode(200);
+            return response;
         }}
 
     @Override

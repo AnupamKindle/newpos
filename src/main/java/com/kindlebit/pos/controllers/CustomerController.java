@@ -8,6 +8,7 @@ import com.kindlebit.pos.service.CustomerService;
 import com.kindlebit.pos.service.OrderService;
 import com.kindlebit.pos.utill.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -50,13 +51,12 @@ public class CustomerController {
 
     @PutMapping("/edit-customer/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public Response editCustomer(@PathVariable(value = "id") Long id, @RequestBody Customer customer) {
-        Customer editCustomer = customerService.editCustomer(id, customer);
-        Response response = new Response();
-        response.setMessage(" Customer has been updated . ");
-        response.setStatusCode(200);
-        response.setBody(editCustomer);
-        return response;
+    public ResponseEntity<?> editCustomer(@PathVariable(value = "id") Long id, @RequestBody Customer customer) {
+        Response customerResponse = customerService.editCustomer(id, customer);
+
+        return ResponseEntity
+                .status(customerResponse.getStatusCode())
+                .body(customerResponse);
     }
 
 
@@ -82,7 +82,7 @@ public class CustomerController {
         Response response = new Response();
         response.setBody(ordersResponse);
         response.setStatusCode(200);
-        response.setMessage(" order has been placed ");
+        response.setMessage(" Customer has been created. ");
         return response;
     }
 
