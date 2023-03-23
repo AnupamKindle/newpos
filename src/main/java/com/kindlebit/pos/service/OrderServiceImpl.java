@@ -1,9 +1,11 @@
 package com.kindlebit.pos.service;
 
+import com.kindlebit.pos.models.BookTableDetails;
 import com.kindlebit.pos.models.Customer;
 
 import com.kindlebit.pos.models.Orders;
 import com.kindlebit.pos.models.TableTop;
+import com.kindlebit.pos.repository.BookTableDetailsRepository;
 import com.kindlebit.pos.repository.CustomerRepository;
 import com.kindlebit.pos.repository.OrdersRepository;
 import com.kindlebit.pos.repository.TableRepository;
@@ -25,6 +27,9 @@ public class OrderServiceImpl implements OrderService{
 
     @Autowired
     TableRepository tableRepository;
+
+    @Autowired
+    BookTableDetailsRepository bookTableDetailsRepository;
 
     @Override
     public Orders placeOrder(Orders order, Long customerId) {
@@ -209,8 +214,14 @@ public class OrderServiceImpl implements OrderService{
                 Optional<TableTop> tableTop= tableRepository.findByTableName(tableName);
 
                 tableTop.get().setStatus("booked");
-                tableRepository.save(tableTop.get());
+                TableTop tableTop1= tableRepository.save(tableTop.get());
                 newOrders.setTableName(tableName);
+
+                BookTableDetails bookTableDetails=new BookTableDetails();
+                bookTableDetails.setCustomerId(newCustomer.getId());
+                bookTableDetails.setBookedDate(new Date());
+                bookTableDetails.setTableId(tableTop1.getId());
+                bookTableDetailsRepository.save(bookTableDetails);
             }
             else if(orderType.equals("dine in")) {
                 Optional<TableTop> tableTop= tableRepository.findByTableName(tableName);
@@ -243,8 +254,15 @@ public class OrderServiceImpl implements OrderService{
                 Optional<TableTop> tableTop= tableRepository.findByTableName(tableName);
 
                 tableTop.get().setStatus("booked");
-                tableRepository.save(tableTop.get());
+             TableTop tableTop1 = tableRepository.save(tableTop.get());
                 newOrders.setTableName(tableName);
+
+                BookTableDetails bookTableDetails=new BookTableDetails();
+                bookTableDetails.setCustomerId(existCustomer.get().getId());
+                bookTableDetails.setBookedDate(new Date());
+                bookTableDetails.setTableId(tableTop1.getId());
+                bookTableDetailsRepository.save(bookTableDetails);
+
             }
             else if(orderType.equals("dine in")) {
                 Optional<TableTop> tableTop= tableRepository.findByTableName(tableName);

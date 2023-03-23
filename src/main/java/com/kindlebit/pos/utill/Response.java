@@ -6,13 +6,18 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 
-public class Response  {
+public class Response extends OutputStream {
 
     private int statusCode=200;
     private String message="";
     private Object body=null;
 
     public Response() {
+
+    }
+
+    @Override
+    public void write(int b) throws IOException {
 
     }
 

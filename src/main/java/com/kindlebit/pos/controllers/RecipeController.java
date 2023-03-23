@@ -94,7 +94,7 @@ public class RecipeController {
 
     @PutMapping("/edit-recipe")
     @PreAuthorize("hasRole('ADMIN')")
-    public Response editRecipe(@RequestParam String name,@RequestParam Boolean veg,@RequestParam Integer halfPrice,
+    public Response editRecipe(@RequestParam String name,@RequestParam Boolean veg,@RequestParam Integer halfPrice,@RequestParam Integer quaterPrice,
                                @RequestParam Integer fullPrice,@RequestParam String description,
                                @RequestParam Long menuId,@RequestParam(value ="file", required=false) MultipartFile file ,@RequestParam Long recipeId) throws Exception
     {
@@ -112,6 +112,7 @@ public class RecipeController {
         recipe.setDescription(description);
         recipe.setFullPrice(fullPrice);
         recipe.setHalfPrice(halfPrice);
+        recipe.setQuaterPrice(quaterPrice);
 
         Recipe recipeResponse= recipeService.editRecipe(recipe,recipeId,menuId);
         Response response = new Response();
