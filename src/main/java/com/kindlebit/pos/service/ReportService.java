@@ -19,6 +19,8 @@ public interface ReportService {
 
    Response listOfLoyalCustomer( String toDate, String fromDate, Long noOfTime) throws ParseException, IOException;
 
+   Response monthlySale(String year);
+
 
 
 

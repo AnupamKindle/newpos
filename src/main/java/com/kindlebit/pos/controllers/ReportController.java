@@ -40,19 +40,17 @@ public class ReportController {
 
 
 
-/*
-    @GetMapping("/loyal-customer")
+    @GetMapping("/monthly-sale")
     @PreAuthorize("hasRole('ADMIN')")
-    public Response exportIntoExcelFile(@RequestParam(value ="fromDate", required=true) String toDate,
-                                        @RequestParam(value ="toDate", required=true) String fromDate,
-                                        @RequestParam(value ="noOfTime", required=true) Long noOfTime) throws ParseException, IOException {
+    public Response monthlySale(@RequestParam(value ="year", required=true) String year)  {
 
-        Response response = reportService.listOfLoyalCustomer(fromDate,toDate,noOfTime);
+        Response response = reportService.monthlySale(year);
 
 
         return response;
     }
-*/
+
+
 
 
 

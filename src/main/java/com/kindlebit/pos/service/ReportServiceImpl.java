@@ -1,6 +1,8 @@
 package com.kindlebit.pos.service;
 
 
+import com.kindlebit.pos.dto.MonthlyReportDTO;
+import com.kindlebit.pos.dto.MonthlyReportDTOResponse;
 import com.kindlebit.pos.dto.NumberOfTimeOrdersDTO;
 import com.kindlebit.pos.models.Customer;
 import com.kindlebit.pos.repository.CustomerRepository;
@@ -46,63 +48,6 @@ OrdersRepository ordersRepository;
 CustomerRepository customerRepository;
 
 
-  /*  private XSSFWorkbook workbook=new XSSFWorkbook();
-    private XSSFSheet sheet=null;*/
-
-/*
-    @Override
-    public ResponseEntity<InputStreamResource> listOfLoyalCustomer( String fromDate, String toDate, Long noOfTime) throws ParseException, IOException {
-
-
-        Response response=new Response();
-        String sDate1=toDate;
-        Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(sDate1);
-        String sDate2=fromDate;
-        Date date2=new SimpleDateFormat("yyyy-MM-dd").parse(sDate2);
-
-        List<Customer> customerList= new ArrayList<Customer>();
-
-        List<NumberOfTimeOrdersDTO> numberOfTimeOrdersDTOS= ordersRepository.listOfLoyalCustomer(date1,date2,noOfTime);
-
-      numberOfTimeOrdersDTOS.sort(new NumberOfTimeOrdersDTOComparator());
-
-        for(NumberOfTimeOrdersDTO numberOfTimeOrdersDTO: numberOfTimeOrdersDTOS)
-        {
-            Long id=numberOfTimeOrdersDTO.getCustomerId();
-            Optional<Customer> customer=customerRepository.findById(id);
-
-            if(customer.isPresent()) {
-                Customer customerResponse = new Customer();
-                customerResponse.setCreatedAt(customer.get().getCreatedAt());
-                customerResponse.setName(customer.get().getName());
-                customerResponse.setId(customer.get().getId());
-                customerResponse.setPhoneNumber(customer.get().getPhoneNumber());
-                customerResponse.setUpdatedAt(customer.get().getUpdatedAt());
-                customerList.add(customerResponse);
-
-
-            }
-
-        }
-
-
-        //ByteArrayInputStream out= LoyalCustomerExcel.loyalCustomerToExcel(customerList);
-
-       // generate( fromDate,  toDate,  noOfTime,  httpServletResponse);
-
-*/
-/*        HttpHeaders httpHeaders=new HttpHeaders();
-        httpHeaders.add("Content-Disposition","attachment;filename=Customer.xlsx");*//*
-
-
-        response.setBody(customerList);
-        response.setStatusCode(200);
-        response.setMessage("This is the list of loyal customers ");
-       // return ResponseEntity.ok().header(httpHeaders.toString()).body(new InputStreamResource(out)) ;
-
-        return response ;
-    }
-*/
 
 
 
@@ -136,30 +81,93 @@ CustomerRepository customerRepository;
                 customerResponse.setUpdatedAt(customer.get().getUpdatedAt());
                 customerList.add(customerResponse);
 
-
             }
 
         }
 
-
-        //ByteArrayInputStream out= LoyalCustomerExcel.loyalCustomerToExcel(customerList);
-
-        // generate( fromDate,  toDate,  noOfTime,  httpServletResponse);
-
-/*        HttpHeaders httpHeaders=new HttpHeaders();
-        httpHeaders.add("Content-Disposition","attachment;filename=Customer.xlsx");*/
-
         response.setBody(customerList);
         response.setStatusCode(200);
         response.setMessage("This is the list of loyal customers ");
-        // return ResponseEntity.ok().header(httpHeaders.toString()).body(new InputStreamResource(out)) ;
 
         return response ;
     }
 
+    @Override
+    public Response monthlySale(String year) {
+
+        List<MonthlyReportDTO> monthlyReportDTOS=ordersRepository.monthlyReport();
+
+        List<MonthlyReportDTOResponse> monthlyReportDTOResponseList=new ArrayList<MonthlyReportDTOResponse>() ;
+
+        for(MonthlyReportDTO m: monthlyReportDTOS)
+        {
+            MonthlyReportDTOResponse monthlyReportDTOResponse=new MonthlyReportDTOResponse();
+
+            if( (String.valueOf(m.getYear()).equals(year)))
+            {
+
+                monthlyReportDTOResponse.setYear(m.getYear());
+                String monthName =  monthName(m.getMonth());
+                monthlyReportDTOResponse.setMonthName(monthName);
+                monthlyReportDTOResponse.setTotal_sale(m.getTotal_sale());
+                monthlyReportDTOResponse.setNumberOfOrder(m.getNumberOfOrder());
+                monthlyReportDTOResponseList.add(monthlyReportDTOResponse);
+            }
+
+        }
+        Response response=new Response();
+        response.setBody(monthlyReportDTOResponseList);
+        response.setMessage("Monthly report of years");
+        return response;
+    }
 
 
+    String monthName(Integer number)
+    {
+        String monthName = null;
+        switch (number)
+        {
+            case 1:
+               monthName="January";
+               break;
+            case 2:
+                monthName="february";
+                break;
+            case 3:
+                monthName="march";
+                break;
+            case 4:
+                monthName="april";
+                break;
+            case 5:
+                monthName="may";
+                break;
+            case 6:
+                monthName="june";
+                break;
+            case 7:
+                monthName="july";
+                break;
+            case 8:
+                monthName="august";
+                break;
+            case 9:
+                monthName="september";
+                break;
+            case 10:
+                monthName="october";
+                break;
+            case 11:
+                monthName="november";
+                break;
+            case 12:
+                monthName="december";
+                break;
 
+        }
+
+        return monthName;
+    }
 
 
 }
