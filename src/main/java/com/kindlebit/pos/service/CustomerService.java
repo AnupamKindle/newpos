@@ -11,9 +11,12 @@ public interface CustomerService {
 
     Customer getCustomer(Long CustomerId);
 
-    List<Customer> customerList();
+    Response customerList(Integer pageNo, Integer pageSize, String sortBy, String sortDir,String searchByName,String searchByPhone);
 
     Response editCustomer(Long customerId, Customer customer);
 
     Boolean deleteCustomer(Long customerId);
+
+
+    Response customerListByPagination(Integer pageNo, Integer pageSize, String sortBy, String sortDir,String searchByName,String searchByPhone);
 }

@@ -24,14 +24,15 @@ public class TableController {
 
     @PostMapping("/new-table")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public Response newTable(@RequestBody TableTop tableTop) {
+    public ResponseEntity<?> newTable(@RequestBody TableTop tableTop) {
         tableTop.setCreatedAt(new Date());
-        TableTop tableTop1 = tableService.storeTable(tableTop);
-        Response response = new Response();
-        response.setBody(tableTop1);
-        response.setStatusCode(200);
-        response.setMessage("table has been saved");
-        return response;
+        Response response = tableService.storeTable(tableTop);
+
+
+        return ResponseEntity
+                .status(response.getStatusCode())
+                .body(response);
+
     }
 
 
@@ -46,6 +47,8 @@ public class TableController {
         response.setStatusCode(200);
         response.setBody(tableTops);
         return response;
+
+
     }
 
 

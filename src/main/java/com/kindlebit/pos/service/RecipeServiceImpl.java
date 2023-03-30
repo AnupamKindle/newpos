@@ -53,8 +53,17 @@ public class RecipeServiceImpl implements RecipeService {
             recipeDb.setVeg(recipe.getVeg());
             recipeDb.setDescription(recipe.getDescription().toLowerCase());
             recipeDb.setFullPrice(recipe.getFullPrice());
-            recipeDb.setHalfPrice(recipe.getHalfPrice());
-            if(recipe.getQuaterPrice()==null)
+
+            if(recipe.getHalfPrice()==null)
+            {
+                recipeDb.setHalfPrice(0);
+            }
+            else {
+
+                recipeDb.setHalfPrice(recipe.getHalfPrice());
+            }
+
+                if(recipe.getQuaterPrice()==null)
             {
                 recipeDb.setQuaterPrice(0);
             }
@@ -111,9 +120,6 @@ public class RecipeServiceImpl implements RecipeService {
         if(menuId !=0 && search!=null)
         {
             List<Recipe> recipeList = recipeRepository.searchRecipeByLikeName(search,menuId);
-
-
-
             List<RecipeDTO> recipeDTOS=new ArrayList<RecipeDTO>();
             for(Recipe recipe: recipeList)
             {
@@ -197,10 +203,10 @@ public class RecipeServiceImpl implements RecipeService {
             String name =( (recipe.getName() !=" " && recipe.getName()!=null) ?recipe.getName():existRecipe.get().getName());
             Menu menu = (recipe.getMenu() !=null ? recipe.getMenu():existRecipe.get().getMenu());
             Boolean veg = (recipe.getVeg() !=null ? recipe.getVeg() :existRecipe.get().getVeg() );
-            Integer halfPrice =( (recipe.getHalfPrice() !=null && recipe.getHalfPrice()!=0) ? recipe.getHalfPrice() : existRecipe.get().getHalfPrice());
+            Integer halfPrice =( (recipe.getHalfPrice() !=null ) ? recipe.getHalfPrice() : existRecipe.get().getHalfPrice());
             Integer fullPrice = ( (recipe.getFullPrice() !=null && recipe.getFullPrice()!=0) ? recipe.getFullPrice() : existRecipe.get().getFullPrice());
 
-            Integer  quaterPrice= ( (recipe.getQuaterPrice() !=null && recipe.getQuaterPrice()!=0) ? recipe.getQuaterPrice() : existRecipe.get().getQuaterPrice());
+            Integer  quaterPrice= ( (recipe.getQuaterPrice() !=null ) ? recipe.getQuaterPrice() : existRecipe.get().getQuaterPrice());
 
          if(recipe.getImageData()!=null) {
              byte[] imageData = recipe.getImageData() ;

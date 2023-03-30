@@ -1,17 +1,25 @@
 package com.kindlebit.pos.service;
 
 
-import com.kindlebit.pos.dto.CustomerDTO;
-import com.kindlebit.pos.utill.Response;
 
+import com.kindlebit.pos.utill.Response;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
+
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
-import java.util.List;
+
 
 public interface ReportService {
 
 
-   Response listOfLoyalCustomer(String toDate,String fromDate,Long noOfTime) throws ParseException, IOException;
+   Response listOfLoyalCustomer( String toDate, String fromDate, Long noOfTime) throws ParseException, IOException;
+
+
 
 
 

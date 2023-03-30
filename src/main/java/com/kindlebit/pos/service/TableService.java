@@ -12,7 +12,7 @@ import java.util.Set;
 public interface TableService {
 
 
-    TableTop storeTable(TableTop tableTop);
+    Response storeTable(TableTop tableTop);
 
     List<TableTop> tablesList();
 

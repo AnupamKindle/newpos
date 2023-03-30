@@ -5,6 +5,10 @@ import com.kindlebit.pos.models.Customer;
 import com.kindlebit.pos.repository.CustomerRepository;
 import com.kindlebit.pos.utill.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -39,9 +43,43 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> customerList() {
-        List<Customer> customerList=customerRepository.findAll();
-        return customerList;}
+    public Response customerList(Integer pageNo, Integer pageSize, String sortBy, String sortDir,String searchByName,String searchByPhone) {
+
+        //assertThat(NumberUtils.isParsable("22")).isTrue()
+
+        Response response=new Response();
+        if(searchByName != null)
+        {
+            List<Customer> customerList=customerRepository.findByCustomerName(searchByName);
+            response.setStatusCode(200);
+            response.setBody(customerList);
+            response.setMessage("Customer list according to name");
+            return response;
+        }
+        if(searchByPhone !=null)
+        {
+            List<Customer> customerList=customerRepository.findByCustomerPhone(searchByPhone);
+            response.setStatusCode(200);
+            response.setMessage("Customer list according to phone number");
+            response.setBody(customerList);
+            return response;
+        }
+
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+
+        // create Pageable instance
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+
+
+
+        Page<Customer> customerPagination = customerRepository.findAll(pageable);
+        response.setBody(customerPagination);
+        response.setMessage("Customer list according to pagination ");
+        response.setStatusCode(200);
+        return response;
+    }
 
     @Override
     public Response editCustomer(Long customerId,Customer customer) {
@@ -105,6 +143,28 @@ public class CustomerServiceImpl implements CustomerService {
             customerRepository.delete(existCustomer.get());
             return true;
         }
+    }
+
+    @Override
+    public Response customerListByPagination(Integer pageNo, Integer pageSize, String sortBy, String sortDir, String searchByName, String searchByPhone) {
+
+        Response response=new Response();
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+
+        // create Pageable instance
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+
+
+
+        Page<Customer> customerPagination = customerRepository.findAll(pageable);
+        response.setStatusCode(200);
+        response.setMessage("list of customer according to pagination ");
+        response.setBody(customerPagination);
+
+
+        return response;
     }
 
 

@@ -27,7 +27,7 @@ public class RecipeController {
 
     @PostMapping("/new-recipe")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public Response newRecipe(@RequestParam String name,@RequestParam Boolean veg,@RequestParam Integer halfPrice,
+    public Response newRecipe(@RequestParam String name,@RequestParam Boolean veg,@RequestParam(value ="halfPrice", required=false) Integer halfPrice,
                               @RequestParam Integer fullPrice,@RequestParam(value ="quaterPrice", required=false) Integer quaterPrice  ,@RequestParam String description,
                               @RequestParam Long menuId,@RequestParam(value ="file", required=false) MultipartFile file ) throws IOException {
 
@@ -94,8 +94,9 @@ public class RecipeController {
 
     @PutMapping("/edit-recipe")
     @PreAuthorize("hasRole('ADMIN')")
-    public Response editRecipe(@RequestParam String name,@RequestParam Boolean veg,@RequestParam Integer halfPrice,@RequestParam Integer quaterPrice,
-                               @RequestParam Integer fullPrice,@RequestParam String description,
+    public Response editRecipe(@RequestParam String name,@RequestParam Boolean veg,@RequestParam(value ="halfPrice", required=false) Integer halfPrice,
+                               @RequestParam Integer fullPrice,@RequestParam(value ="quaterPrice", required=false) Integer quaterPrice
+                              ,@RequestParam String description,
                                @RequestParam Long menuId,@RequestParam(value ="file", required=false) MultipartFile file ,@RequestParam Long recipeId) throws Exception
     {
 
@@ -110,9 +111,22 @@ public class RecipeController {
         recipe.setName(name.toLowerCase());
         recipe.setVeg(veg);
         recipe.setDescription(description);
+
         recipe.setFullPrice(fullPrice);
-        recipe.setHalfPrice(halfPrice);
-        recipe.setQuaterPrice(quaterPrice);
+        if(halfPrice==null)
+        {
+            recipe.setHalfPrice(0);
+        }
+        else {
+            recipe.setHalfPrice(halfPrice);
+        }
+        if(quaterPrice == null)
+        {
+            recipe.setQuaterPrice(0);
+        }
+        else {
+            recipe.setQuaterPrice(quaterPrice);
+        }
 
         Recipe recipeResponse= recipeService.editRecipe(recipe,recipeId,menuId);
         Response response = new Response();

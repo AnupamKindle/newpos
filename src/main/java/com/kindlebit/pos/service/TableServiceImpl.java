@@ -30,28 +30,34 @@ public class TableServiceImpl implements TableService {
 
 
     @Override
-    public TableTop storeTable(TableTop tableTop) {
+    public Response storeTable(TableTop tableTop) {
 
+        Response response=new Response();
         Optional<TableTop> tableTop1 = tableRepository.findByTableName(tableTop.getTableName());
         if (tableTop != null) {
             if (tableTop1.isPresent()) {
-                throw new RuntimeException("This table name is already in Data Base.");
+
+
+                response.setMessage("This table name is already present ");
+                response.setBody(null);
+                response.setStatusCode(403);
+                return  response;
             }
 
             TableTop tableTop2= new TableTop();
             tableTop2.setStatus("free");
             tableTop2.setTableName(tableTop.getTableName().toLowerCase());
             tableTop2.setCreatedAt(new Date());
-            tableTop2.setType(tableTop.getType());
+            tableTop2.setType(tableTop.getType().toLowerCase());
             tableTop2.setCapacity(tableTop.getCapacity());
 
             TableTop tableTopResponse = tableRepository.save(tableTop2);
-            Response response = new Response();
+
 
             response.setMessage("Table has been saved");
             response.setStatusCode(200);
-            response.setBody(response);
-            return tableTopResponse;
+            response.setBody(tableTopResponse);
+            return response;
 
         } else {
             throw new RuntimeException(" Kindly fill the data ! ");
