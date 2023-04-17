@@ -12,6 +12,8 @@ public class Response extends OutputStream {
     private String message="";
     private Object body=null;
 
+
+
     public Response() {
 
     }
@@ -44,6 +46,7 @@ public class Response extends OutputStream {
     public void setBody(Object body) {
         this.body = body;
     }
+
 
 
 }

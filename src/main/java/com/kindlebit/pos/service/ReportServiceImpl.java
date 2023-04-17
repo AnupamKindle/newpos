@@ -7,33 +7,26 @@ import com.kindlebit.pos.dto.NumberOfTimeOrdersDTO;
 import com.kindlebit.pos.models.Customer;
 import com.kindlebit.pos.repository.CustomerRepository;
 import com.kindlebit.pos.repository.OrdersRepository;
-import com.kindlebit.pos.utill.LoyalCustomerExcel;
+
 import com.kindlebit.pos.utill.NumberOfTimeOrdersDTOComparator;
 import com.kindlebit.pos.utill.Response;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.*;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.apache.poi.ss.util.CellUtil.createCell;
+
 
 
 @Service
@@ -84,6 +77,105 @@ CustomerRepository customerRepository;
             }
 
         }
+
+        // Code for excel Sheet
+
+
+//creating an instance of Workbook class
+        HSSFWorkbook workbook = new HSSFWorkbook();
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+
+        String fileName="/home/kbs/Desktop/CustomersDetail-"+now+" .xlsx";
+
+        FileOutputStream fileOut = new FileOutputStream(fileName);
+
+
+//invoking creatSheet() method and passing the name of the sheet to be created
+        HSSFSheet sheet = workbook.createSheet(" Loyal Customer List ");
+
+        //creating the 0th row using the createRow() method
+        Row rowhead = sheet.createRow((short)0);
+
+        //creating cell by using the createCell() method and setting the values to the cell by using the setCellValue() method
+
+        CellStyle cellStyle = workbook.createCellStyle();
+
+
+        //set border to table
+        cellStyle.setBorderTop(BorderStyle.MEDIUM);
+        cellStyle.setBorderRight(BorderStyle.MEDIUM);
+        cellStyle.setBorderBottom(BorderStyle.MEDIUM);
+        cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyle.setAlignment(HorizontalAlignment.LEFT);
+
+        cellStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+
+        // Header
+        Row row = sheet.createRow(0);
+
+        Cell cell = row.createCell(0);
+        cell.setCellValue("Name");
+        cell.setCellStyle(cellStyle);
+
+        Cell cell1 = row.createCell(1);
+        cell1.setCellValue("Phone Number");
+        cell1.setCellStyle(cellStyle);
+
+
+        Cell cell2 = row.createCell(2);
+        cell2.setCellValue("Number Of Orders Time");
+        cell2.setCellStyle(cellStyle);
+
+
+
+
+        Integer rowCount=1;
+
+        for(NumberOfTimeOrdersDTO numberOfTimeOrdersDTO: numberOfTimeOrdersDTOS)
+        {
+            Long id=numberOfTimeOrdersDTO.getCustomerId();
+            Optional<Customer> customer=customerRepository.findById(id);
+
+
+            if(customer.isPresent()) {
+                Row row1 = sheet.createRow(rowCount++);
+                row1.createCell(0).setCellValue(customer.get().getName());
+                row1.createCell(1).setCellValue(customer.get().getPhoneNumber());
+                if(numberOfTimeOrdersDTO.getTotalOrder()<2)
+                {
+                    CellStyle cellStyle2 = workbook.createCellStyle();
+                    Cell cellTest = row1.createCell(2);
+                    cellTest.setCellValue(numberOfTimeOrdersDTO.getTotalOrder());
+                    cellStyle2.setBorderTop(BorderStyle.MEDIUM);
+                    cellStyle2.setBorderRight(BorderStyle.MEDIUM);
+                    cellStyle2.setBorderBottom(BorderStyle.MEDIUM);
+                    cellStyle2.setBorderLeft(BorderStyle.MEDIUM);
+                    cellStyle2.setAlignment(HorizontalAlignment.LEFT);
+                    cellStyle2.setShrinkToFit(true);
+                    cellStyle2.setFillForegroundColor(IndexedColors.RED.getIndex());
+                    cellStyle2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                    cellTest.setCellStyle(cellStyle2);
+                }else {
+                    row1.createCell(2).setCellValue(numberOfTimeOrdersDTO.getTotalOrder());
+                }
+
+              //  System.out.println("========================================>>>>"+ numberOfTimeOrdersDTO.getTotalOrder());
+
+            }
+
+        }
+        workbook.write(fileOut);
+
+        //closing the Stream
+        fileOut.close();
+        //closing the workbook
+        workbook.close();
+         //prints the message on the console
+        System.out.println("Excel file has been generated successfully.");
 
         response.setBody(customerList);
         response.setStatusCode(200);

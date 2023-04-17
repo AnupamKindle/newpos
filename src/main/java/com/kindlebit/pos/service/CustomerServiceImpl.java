@@ -50,17 +50,31 @@ public class CustomerServiceImpl implements CustomerService {
         Response response=new Response();
         if(searchByName != null)
         {
-            List<Customer> customerList=customerRepository.findByCustomerName(searchByName);
+            Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                    : Sort.by(sortBy).descending();
+
+
+            // create Pageable instance
+            Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+            Page<Customer> customerList=customerRepository.findByCustomerName(searchByName,pageable);
             response.setStatusCode(200);
+
             response.setBody(customerList);
             response.setMessage("Customer list according to name");
             return response;
         }
         if(searchByPhone !=null)
         {
-            List<Customer> customerList=customerRepository.findByCustomerPhone(searchByPhone);
+            Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                    : Sort.by(sortBy).descending();
+
+
+            // create Pageable instance
+            Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+            Page<Customer> customerList=customerRepository.findByCustomerPhone(searchByPhone,pageable);
             response.setStatusCode(200);
             response.setMessage("Customer list according to phone number");
+
             response.setBody(customerList);
             return response;
         }
@@ -75,7 +89,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 
         Page<Customer> customerPagination = customerRepository.findAll(pageable);
-        response.setBody(customerPagination);
+       response.setBody(customerPagination);
         response.setMessage("Customer list according to pagination ");
         response.setStatusCode(200);
         return response;
